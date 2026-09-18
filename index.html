@@ -4,98 +4,169 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abu Kamila Karrar - Official</title>
-<meta name="description" content="Abu Kamila Karrar - صانع محتوى عراقي، مطور أدوات، ومصمم">
-<meta name="keywords" content="Abu Kamila, Karrar, أبو كاميلا, كرار, Iraq">
+<meta name="description" content="Abu Kamila Karrar - صانع محتوى عراقي، مطور أدوات، مصمم">
+<meta name="keywords" content="Abu Kamila, Karrar, أبو كاميلا, كرار">
 <meta name="author" content="Abu Kamila Karrar">
-<meta property="og:title" content="Abu Kamila Karrar">
-<meta property="og:description" content="صانع محتوى عراقي ومطور أدوات">
-<meta property="og:type" content="website">
 
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
   
   body {
-    background: #0a0a0a;
+    background: #000;
     color: #fff;
     min-height: 100vh;
     overflow-x: hidden;
+    cursor: crosshair;
   }
   
-  /* الخلفية المتحركة */
-  body::before {
-    content: '';
+  /* مطر المصفوفة */
+  #matrix {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: 
-      radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.1) 0%, transparent 50%);
     z-index: -1;
-    animation: bgMove 15s ease-in-out infinite alternate;
+    opacity: 0.25;
   }
   
-  @keyframes bgMove {
-    0% { transform: scale(1) rotate(0deg); }
-    100% { transform: scale(1.1) rotate(3deg); }
+  /* الجزيئات */
+  .particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+  
+  .particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00ff88;
+    animation: float 8s linear infinite;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
   }
   
   /* الهيدر */
   header {
-    padding: 30px 20px;
+    padding: 25px 20px;
     text-align: center;
     border-bottom: 2px solid #00ff88;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(15px);
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
   }
   
   .logo {
-    font-size: 36px;
+    font-size: 32px;
     font-weight: bold;
     color: #00ff88;
-    text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88;
+    text-shadow: 0 0 20px #00ff88;
     letter-spacing: 3px;
     animation: glow 2s ease-in-out infinite alternate;
   }
   
   @keyframes glow {
     from { text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88; }
-    to { text-shadow: 0 0 30px #00ff88, 0 0 60px #00ff88, 0 0 80px #00ff88; }
+    to { text-shadow: 0 0 30px #00ff88, 0 0 60px #00ff88, 0 0 90px #00ff88; }
   }
   
-  .subtitle {
-    color: #888;
-    margin-top: 10px;
-    font-size: 14px;
+  .visitor-counter {
+    color: #00ff88;
+    font-size: 13px;
+    margin-top: 8px;
+    opacity: 0.8;
   }
   
   /* الاسم الكبير */
   .hero {
     text-align: center;
-    padding: 80px 20px;
+    padding: 70px 20px;
   }
   
   .hero h1 {
-    font-size: 56px;
-    background: linear-gradient(90deg, #00ff88, #00ccff, #00ff88);
-    background-size: 200% auto;
+    font-size: 52px;
+    background: linear-gradient(90deg, #00ff88, #00ccff, #ff00ff, #00ff88);
+    background-size: 300% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shine 3s linear infinite;
+    animation: shine 4s linear infinite;
     margin-bottom: 20px;
+    position: relative;
   }
   
   @keyframes shine {
-    to { background-position: 200% center; }
+    to { background-position: 300% center; }
+  }
+  
+  /* Glitch effect */
+  .glitch {
+    position: relative;
+  }
+  
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #000;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  
+  .glitch::before {
+    animation: glitch-1 3s infinite;
+    color: #00ffff;
+    -webkit-text-fill-color: #00ffff;
+    z-index: -1;
+  }
+  
+  .glitch::after {
+    animation: glitch-2 3s infinite;
+    color: #ff00ff;
+    -webkit-text-fill-color: #ff00ff;
+    z-index: -2;
+  }
+  
+  @keyframes glitch-1 {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-3px, 2px); }
+    94% { transform: translate(3px, -2px); }
+    96% { transform: translate(-2px, -1px); }
+  }
+  
+  @keyframes glitch-2 {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(3px, -2px); }
+    94% { transform: translate(-3px, 2px); }
+    96% { transform: translate(2px, 1px); }
   }
   
   .hero p {
     color: #aaa;
     font-size: 20px;
     margin-bottom: 30px;
+    min-height: 30px;
+  }
+  
+  .cursor {
+    color: #00ff88;
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    50% { opacity: 0; }
   }
   
   .badge {
@@ -106,6 +177,15 @@
     color: #00ff88;
     font-size: 14px;
     margin: 5px;
+    background: rgba(0, 255, 136, 0.05);
+    transition: 0.3s;
+  }
+  
+  .badge:hover {
+    background: #00ff88;
+    color: #000;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #00ff88;
   }
   
   /* الأقسام */
@@ -121,6 +201,7 @@
     margin-bottom: 30px;
     text-align: center;
     position: relative;
+    text-shadow: 0 0 20px #00ff88;
   }
   
   .section h2::after {
@@ -131,20 +212,49 @@
     background: #00ff88;
     margin: 15px auto 0;
     box-shadow: 0 0 15px #00ff88;
+    animation: pulse-width 2s ease-in-out infinite;
   }
   
+  @keyframes pulse-width {
+    0%, 100% { width: 60px; }
+    50% { width: 120px; }
+  }
+  
+  /* البطاقات */
   .card {
-    background: rgba(20, 20, 20, 0.8);
+    background: rgba(10, 10, 10, 0.8);
     border: 1px solid #00ff88;
     border-radius: 15px;
     padding: 25px;
     margin-bottom: 20px;
-    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+    transition: 0.4s;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    background: linear-gradient(45deg, #00ff88, #00ccff, #ff00ff, #00ff88);
+    background-size: 400% 400%;
+    z-index: -1;
+    border-radius: 15px;
+    animation: gradient-move 3s ease infinite;
+    opacity: 0;
+    transition: 0.4s;
+  }
+  
+  .card:hover::before { opacity: 1; }
+  
+  @keyframes gradient-move {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
   
   .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 255, 136, 0.3);
   }
   
   .card h3 {
@@ -155,13 +265,13 @@
   
   .card p {
     color: #bbb;
-    line-height: 1.7;
+    line-height: 1.8;
   }
   
   /* شبكة الأدوات */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 15px;
     margin-top: 20px;
   }
@@ -173,49 +283,45 @@
     padding: 20px;
     text-align: center;
     transition: 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .tool::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: rgba(0, 255, 136, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.6s;
+  }
+  
+  .tool:hover::after {
+    width: 300px;
+    height: 300px;
   }
   
   .tool:hover {
-    background: rgba(0, 255, 136, 0.15);
-    transform: scale(1.05);
+    transform: scale(1.08);
+    border-color: #00ff88;
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.5);
   }
   
   .tool .icon {
     font-size: 32px;
     margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
   }
   
   .tool .name {
     color: #00ff88;
     font-size: 14px;
-  }
-  
-  /* الأزرار */
-  .btn {
-    display: inline-block;
-    padding: 15px 40px;
-    background: #00ff88;
-    color: #000;
-    border: none;
-    border-radius: 50px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-    transition: 0.3s;
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-    margin: 10px;
-  }
-  
-  .btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
-  }
-  
-  .btn-outline {
-    background: transparent;
-    color: #00ff88;
-    border: 2px solid #00ff88;
+    position: relative;
+    z-index: 1;
   }
   
   /* التواصل */
@@ -243,6 +349,38 @@
   .contact-link:hover {
     background: #00ff88;
     color: #000;
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #00ff88;
+  }
+  
+  /* زر الموسيقى */
+  .music-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #00ff88;
+    border: none;
+    color: #000;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 0 25px #00ff88;
+    transition: 0.3s;
+    z-index: 999;
+  }
+  
+  .music-btn:hover {
+    transform: scale(1.15) rotate(15deg);
+  }
+  
+  .music-btn.playing {
+    animation: rotate 2s linear infinite;
+  }
+  
+  @keyframes rotate {
+    to { transform: rotate(360deg); }
   }
   
   /* الفوتر */
@@ -252,37 +390,56 @@
     border-top: 2px solid #00ff88;
     color: #666;
     margin-top: 50px;
+    background: rgba(0, 0, 0, 0.5);
   }
   
   footer .heart {
     color: #ff0044;
     animation: pulse 1s infinite;
+    display: inline-block;
   }
   
   @keyframes pulse {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+    50% { transform: scale(1.3); }
+  }
+  
+  /* ظهور تدريجي */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+  
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
   
   /* موبايل */
   @media (max-width: 600px) {
-    .hero h1 { font-size: 36px; }
-    .logo { font-size: 24px; }
+    .hero h1 { font-size: 32px; }
+    .logo { font-size: 20px; }
     .section { padding: 40px 15px; }
     .section h2 { font-size: 24px; }
+    .hero p { font-size: 16px; }
   }
 </style>
 </head>
 <body>
 
+<!-- الخلفيات -->
+<canvas id="matrix"></canvas>
+<div class="particles" id="particles"></div>
+
 <header>
   <div class="logo">ABU KAMILA KARRAR</div>
-  <div class="subtitle">Official Website</div>
+  <div class="visitor-counter">👁️ <span id="visits">...</span> زيارة</div>
 </header>
 
 <section class="hero">
-  <h1>Abu Kamila Karrar</h1>
-  <p>صانع محتوى عراقي • مطوّر أدوات • مصمم</p>
+  <h1 class="glitch" data-text="Abu Kamila Karrar">Abu Kamila Karrar</h1>
+  <p><span id="typing"></span><span class="cursor">|</span></p>
   <div>
     <span class="badge">🇮🇶 Iraq</span>
     <span class="badge">💻 Developer</span>
@@ -290,7 +447,7 @@
   </div>
 </section>
 
-<section class="section" id="about">
+<section class="section fade-in" id="about">
   <h2>عني</h2>
   <div class="card">
     <h3>👋 مرحبا</h3>
@@ -302,54 +459,28 @@
   </div>
 </section>
 
-<section class="section" id="work">
+<section class="section fade-in" id="work">
   <h2>مشاريعي</h2>
   <div class="grid">
-    <div class="tool">
-      <div class="icon">🎬</div>
-      <div class="name">AI Video Maker</div>
-    </div>
-    <div class="tool">
-      <div class="icon">🎨</div>
-      <div class="name">Photo Editor</div>
-    </div>
-    <div class="tool">
-      <div class="icon">🎮</div>
-      <div class="name">eFootball Tools</div>
-    </div>
-    <div class="tool">
-      <div class="icon">🌐</div>
-      <div class="name">Net Booster</div>
-    </div>
-    <div class="tool">
-      <div class="icon">📱</div>
-      <div class="name">PWA Apps</div>
-    </div>
-    <div class="tool">
-      <div class="icon">🤖</div>
-      <div class="name">Telegram Bots</div>
-    </div>
+    <div class="tool"><div class="icon">🎬</div><div class="name">AI Video</div></div>
+    <div class="tool"><div class="icon">🎨</div><div class="name">Photo Editor</div></div>
+    <div class="tool"><div class="icon">🎮</div><div class="name">eFootball</div></div>
+    <div class="tool"><div class="icon">🌐</div><div class="name">Net Booster</div></div>
+    <div class="tool"><div class="icon">📱</div><div class="name">PWA Apps</div></div>
+    <div class="tool"><div class="icon">🤖</div><div class="name">Telegram</div></div>
   </div>
 </section>
 
-<section class="section" id="contact">
+<section class="section fade-in" id="contact">
   <h2>تواصل معي</h2>
   <p style="text-align:center; color:#aaa; margin-bottom:20px;">
     تقدر تتواصل معي على المنصات التالية:
   </p>
   <div class="contact-links">
-    <a href="https://tiktok.com" class="contact-link" target="_blank">
-      <span>🎵</span> TikTok
-    </a>
-    <a href="https://youtube.com" class="contact-link" target="_blank">
-      <span>▶️</span> YouTube
-    </a>
-    <a href="https://instagram.com" class="contact-link" target="_blank">
-      <span>📷</span> Instagram
-    </a>
-    <a href="https://t.me" class="contact-link" target="_blank">
-      <span>✈️</span> Telegram
-    </a>
+    <a href="https://tiktok.com" class="contact-link" target="_blank"><span>🎵</span> TikTok</a>
+    <a href="https://youtube.com" class="contact-link" target="_blank"><span>▶️</span> YouTube</a>
+    <a href="https://instagram.com" class="contact-link" target="_blank"><span>📷</span> Instagram</a>
+    <a href="https://t.me" class="contact-link" target="_blank"><span>✈️</span> Telegram</a>
   </div>
 </section>
 
@@ -357,6 +488,125 @@
   <p>© 2026 <b style="color:#00ff88">Abu Kamila Karrar</b></p>
   <p style="margin-top:10px;">صُنع بـ <span class="heart">❤️</span> في العراق 🇮🇶</p>
 </footer>
+
+<!-- زر الموسيقى -->
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ═══ مطر المصفوفة ═══
+const matrix = document.getElementById('matrix');
+const ctx = matrix.getContext('2d');
+matrix.width = window.innerWidth;
+matrix.height = window.innerHeight;
+
+const chars = 'アイウエオカキクケコサシスセソ0123456789ABCDEF';
+const fontSize = 14;
+const columns = matrix.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+  ctx.fillRect(0, 0, matrix.width, matrix.height);
+  ctx.fillStyle = '#00ff88';
+  ctx.font = fontSize + 'px monospace';
+  
+  for (let i = 0; i < drops.length; i++) {
+    const text = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > matrix.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix, 50);
+
+// ═══ الجزيئات ═══
+const particlesEl = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.animationDelay = Math.random() * 8 + 's';
+  p.style.animationDuration = (5 + Math.random() * 5) + 's';
+  particlesEl.appendChild(p);
+}
+
+// ═══ الكتابة التلقائية ═══
+const typingEl = document.getElementById('typing');
+const texts = [
+  'صانع محتوى عراقي 🇮🇶',
+  'مطوّر أدوات 💻',
+  'مصمم جرافيك 🎨',
+  'هاكر أخلاقي 🥷'
+];
+let textIndex = 0, charIndex = 0, deleting = false;
+
+function type() {
+  const current = texts[textIndex];
+  if (!deleting) {
+    typingEl.textContent = current.substring(0, charIndex++);
+    if (charIndex > current.length) {
+      deleting = true;
+      setTimeout(type, 2000);
+      return;
+    }
+  } else {
+    typingEl.textContent = current.substring(0, charIndex--);
+    if (charIndex < 0) {
+      deleting = false;
+      textIndex = (textIndex + 1) % texts.length;
+    }
+  }
+  setTimeout(type, deleting ? 50 : 100);
+}
+type();
+
+// ═══ عدّاد الزوار (محلي) ═══
+let visits = localStorage.getItem('ak_visits');
+if (!visits) visits = 0;
+visits = parseInt(visits) + 1;
+localStorage.setItem('ak_visits', visits);
+document.getElementById('visits').textContent = visits;
+
+// ═══ ظهور تدريجي عند التمرير ═══
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ═══ زر الموسيقى ═══
+let playing = false;
+function toggleMusic() {
+  const music = document.getElementById('bgMusic');
+  const btn = document.getElementById('musicBtn');
+  if (!playing) {
+    music.volume = 0.3;
+    music.play().catch(() => {});
+    btn.textContent = '⏸️';
+    btn.classList.add('playing');
+    playing = true;
+  } else {
+    music.pause();
+    btn.textContent = '🎵';
+    btn.classList.remove('playing');
+    playing = false;
+  }
+}
+
+// ═══ تحديث حجم الشاشة ═══
+window.addEventListener('resize', () => {
+  matrix.width = window.innerWidth;
+  matrix.height = window.innerHeight;
+});
+</script>
 
 </body>
 </html>
