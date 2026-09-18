@@ -244,11 +244,7 @@ window.addEventListener('resize', () => {
 });
 
 // Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').then(r => console.log('✅ SW')).catch(e => console.log('⚠️ SW:', e));
-  });
-}
+
 
 // PWA Install
 let deferredPrompt = null;
