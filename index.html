@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abu Kamila Karrar - Official</title>
+<meta name="description" content="Abu Kamila Karrar - صانع محتوى عراقي، مطور أدوات، ومصمم">
+<meta name="keywords" content="Abu Kamila, Karrar, أبو كاميلا, كرار, Iraq">
+<meta name="author" content="Abu Kamila Karrar">
+<meta property="og:title" content="Abu Kamila Karrar">
+<meta property="og:description" content="صانع محتوى عراقي ومطور أدوات">
+<meta property="og:type" content="website">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  
+  body {
+    background: #0a0a0a;
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* الخلفية المتحركة */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.1) 0%, transparent 50%);
+    z-index: -1;
+    animation: bgMove 15s ease-in-out infinite alternate;
+  }
+  
+  @keyframes bgMove {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.1) rotate(3deg); }
+  }
+  
+  /* الهيدر */
+  header {
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 2px solid #00ff88;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .logo {
+    font-size: 36px;
+    font-weight: bold;
+    color: #00ff88;
+    text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88;
+    letter-spacing: 3px;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow {
+    from { text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88; }
+    to { text-shadow: 0 0 30px #00ff88, 0 0 60px #00ff88, 0 0 80px #00ff88; }
+  }
+  
+  .subtitle {
+    color: #888;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  /* الاسم الكبير */
+  .hero {
+    text-align: center;
+    padding: 80px 20px;
+  }
+  
+  .hero h1 {
+    font-size: 56px;
+    background: linear-gradient(90deg, #00ff88, #00ccff, #00ff88);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shine 3s linear infinite;
+    margin-bottom: 20px;
+  }
+  
+  @keyframes shine {
+    to { background-position: 200% center; }
+  }
+  
+  .hero p {
+    color: #aaa;
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 2px solid #00ff88;
+    border-radius: 50px;
+    color: #00ff88;
+    font-size: 14px;
+    margin: 5px;
+  }
+  
+  /* الأقسام */
+  .section {
+    padding: 60px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .section h2 {
+    color: #00ff88;
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .section h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: #00ff88;
+    margin: 15px auto 0;
+    box-shadow: 0 0 15px #00ff88;
+  }
+  
+  .card {
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid #00ff88;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+  }
+  
+  .card h3 {
+    color: #00ff88;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  
+  .card p {
+    color: #bbb;
+    line-height: 1.7;
+  }
+  
+  /* شبكة الأدوات */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .tool {
+    background: rgba(0, 255, 136, 0.05);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: 0.3s;
+  }
+  
+  .tool:hover {
+    background: rgba(0, 255, 136, 0.15);
+    transform: scale(1.05);
+  }
+  
+  .tool .icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .tool .name {
+    color: #00ff88;
+    font-size: 14px;
+  }
+  
+  /* الأزرار */
+  .btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: #00ff88;
+    color: #000;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    margin: 10px;
+  }
+  
+  .btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
+  }
+  
+  .btn-outline {
+    background: transparent;
+    color: #00ff88;
+    border: 2px solid #00ff88;
+  }
+  
+  /* التواصل */
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+  }
+  
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 25px;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid #00ff88;
+    border-radius: 50px;
+    color: #00ff88;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  
+  .contact-link:hover {
+    background: #00ff88;
+    color: #000;
+  }
+  
+  /* الفوتر */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 2px solid #00ff88;
+    color: #666;
+    margin-top: 50px;
+  }
+  
+  footer .heart {
+    color: #ff0044;
+    animation: pulse 1s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+  
+  /* موبايل */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 36px; }
+    .logo { font-size: 24px; }
+    .section { padding: 40px 15px; }
+    .section h2 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">ABU KAMILA KARRAR</div>
+  <div class="subtitle">Official Website</div>
+</header>
+
+<section class="hero">
+  <h1>Abu Kamila Karrar</h1>
+  <p>صانع محتوى عراقي • مطوّر أدوات • مصمم</p>
+  <div>
+    <span class="badge">🇮🇶 Iraq</span>
+    <span class="badge">💻 Developer</span>
+    <span class="badge">🎨 Designer</span>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <h2>عني</h2>
+  <div class="card">
+    <h3>👋 مرحبا</h3>
+    <p>
+      أنا <b style="color:#00ff88">Abu Kamila Karrar</b>، من العراق.
+      أصنع محتوى رقمي، أطوّر أدوات تقنية، وأصمم تطبيقات.
+      أستخدم Termux وأدوات مفتوحة المصدر لبناء أشياء مفيدة.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="work">
+  <h2>مشاريعي</h2>
+  <div class="grid">
+    <div class="tool">
+      <div class="icon">🎬</div>
+      <div class="name">AI Video Maker</div>
+    </div>
+    <div class="tool">
+      <div class="icon">🎨</div>
+      <div class="name">Photo Editor</div>
+    </div>
+    <div class="tool">
+      <div class="icon">🎮</div>
+      <div class="name">eFootball Tools</div>
+    </div>
+    <div class="tool">
+      <div class="icon">🌐</div>
+      <div class="name">Net Booster</div>
+    </div>
+    <div class="tool">
+      <div class="icon">📱</div>
+      <div class="name">PWA Apps</div>
+    </div>
+    <div class="tool">
+      <div class="icon">🤖</div>
+      <div class="name">Telegram Bots</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <h2>تواصل معي</h2>
+  <p style="text-align:center; color:#aaa; margin-bottom:20px;">
+    تقدر تتواصل معي على المنصات التالية:
+  </p>
+  <div class="contact-links">
+    <a href="https://tiktok.com" class="contact-link" target="_blank">
+      <span>🎵</span> TikTok
+    </a>
+    <a href="https://youtube.com" class="contact-link" target="_blank">
+      <span>▶️</span> YouTube
+    </a>
+    <a href="https://instagram.com" class="contact-link" target="_blank">
+      <span>📷</span> Instagram
+    </a>
+    <a href="https://t.me" class="contact-link" target="_blank">
+      <span>✈️</span> Telegram
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <b style="color:#00ff88">Abu Kamila Karrar</b></p>
+  <p style="margin-top:10px;">صُنع بـ <span class="heart">❤️</span> في العراق 🇮🇶</p>
+</footer>
+
+</body>
+</html>
