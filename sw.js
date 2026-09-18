@@ -1,16 +1,22 @@
 // Service Worker - KARRAR PWA
-const CACHE_NAME = 'abu-kamila-v1';
+const CACHE_NAME = 'abu-kamila-v2';
+const BASE = '/Abu-Kamila-/';
+
 const URLS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json'
+  BASE,
+  BASE + 'index.html',
+  BASE + 'manifest.json',
+  BASE + 'icon-192.png',
+  BASE + 'icon-512.png'
 ];
 
 // تثبيت
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(URLS_TO_CACHE);
+      return cache.addAll(URLS_TO_CACHE).catch(err => {
+        console.log('⚠️ cache error:', err);
+      });
     })
   );
   self.skipWaiting();
@@ -32,21 +38,24 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// اعتراض الطلبات - يشتغل بدون إنترنت
+// اعتراض الطلبات
 self.addEventListener('fetch', (event) => {
+  // نتجاهل الطلبات الخارجية
+  if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+  
   event.respondWith(
     caches.match(event.request).then((response) => {
       return response || fetch(event.request).then((fetchResponse) => {
         return caches.open(CACHE_NAME).then((cache) => {
-          // نخزن فقط الملفات المحلية
-          if (event.request.url.startsWith(self.location.origin)) {
+          if (event.request.method === 'GET') {
             cache.put(event.request, fetchResponse.clone());
           }
           return fetchResponse;
         });
       }).catch(() => {
-        // إذا ما فيه إنترنت، نرجع الصفحة الرئيسية
-        return caches.match('./index.html');
+        return caches.match(BASE + 'index.html');
       });
     })
   );
