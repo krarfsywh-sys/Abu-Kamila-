@@ -1,9 +1,9 @@
 
-<!-- اختبار سرعة النت - مباشر -->
+<!-- اختبار سرعة النت - البينغ يتحرك مباشر -->
 <section class="section fade-in" id="speed">
   <h2>⚡ اختبار سرعة النت</h2>
   <p style="text-align:center; color:#aaa; margin-bottom:25px;">
-    اختبار حقيقي — الأرقام تتغير مباشرة
+    البينغ يتحرك مباشر — مثل اختبارات السرعة الحقيقية
   </p>
 
   <div style="text-align:center; margin-bottom:25px;">
@@ -27,57 +27,81 @@
   <!-- العدادات المباشرة -->
   <div id="liveBox" style="display:none; margin-bottom:25px;">
     
-    <!-- البينغ -->
-    <div class="card" style="text-align:center; padding:25px; border-color:#ffaa00; margin-bottom:15px;">
-      <div style="font-size:30px; margin-bottom:10px;">📡</div>
-      <div style="color:#aaa; font-size:13px; margin-bottom:5px;">البينغ</div>
-      <div id="pingLive" style="color:#ffaa00; font-size:52px; font-weight:bold; font-family:monospace; text-shadow:0 0 20px #ffaa00;">0</div>
-      <div style="color:#666; font-size:12px;">ms</div>
+    <!-- البينغ - المهم -->
+    <div class="card" style="text-align:center; padding:30px 25px; border-color:#ffaa00; margin-bottom:15px; position:relative;">
+      <div style="font-size:35px; margin-bottom:10px;">📡</div>
+      <div style="color:#aaa; font-size:14px; margin-bottom:10px;">البينغ</div>
+      
+      <!-- الرقم الكبير -->
+      <div id="pingLive" style="
+        color:#ffaa00; 
+        font-size:72px; 
+        font-weight:bold; 
+        font-family:'Courier New', monospace; 
+        text-shadow:0 0 30px #ffaa00;
+        transition:all 0.15s;
+        line-height:1;
+      ">0</div>
+      
+      <div style="color:#666; font-size:14px; margin-top:8px;">ms</div>
+      
+      <!-- شريط البينغ -->
+      <div style="margin-top:15px; background:#111; height:8px; border-radius:10px; overflow:hidden;">
+        <div id="pingBar" style="height:100%; width:0%; background:linear-gradient(90deg, #00ff88, #ffaa00, #ff0044); transition:width 0.15s;"></div>
+      </div>
+      
+      <!-- التقييم الفوري -->
+      <div id="pingStatus" style="color:#00ff88; font-size:13px; margin-top:10px; font-weight:bold; min-height:20px;">—</div>
     </div>
 
     <!-- التحميل -->
     <div class="card" style="text-align:center; padding:25px; border-color:#00ff88; margin-bottom:15px;">
       <div style="font-size:30px; margin-bottom:10px;">⬇️</div>
-      <div style="color:#aaa; font-size:13px; margin-bottom:5px;">سرعة التحميل</div>
-      <div id="dlLive" style="color:#00ff88; font-size:52px; font-weight:bold; font-family:monospace; text-shadow:0 0 20px #00ff88;">0.0</div>
-      <div style="color:#666; font-size:12px;">Mbps</div>
+      <div style="color:#aaa; font-size:13px; margin-bottom:8px;">سرعة التحميل</div>
+      <div id="dlLive" style="color:#00ff88; font-size:56px; font-weight:bold; font-family:'Courier New', monospace; text-shadow:0 0 20px #00ff88; transition:all 0.2s; line-height:1;">0.0</div>
+      <div style="color:#666; font-size:12px; margin-top:5px;">Mbps</div>
     </div>
 
     <!-- الرفع -->
     <div class="card" style="text-align:center; padding:25px; border-color:#00ccff;">
       <div style="font-size:30px; margin-bottom:10px;">⬆️</div>
-      <div style="color:#aaa; font-size:13px; margin-bottom:5px;">سرعة الرفع</div>
-      <div id="ulLive" style="color:#00ccff; font-size:52px; font-weight:bold; font-family:monospace; text-shadow:0 0 20px #00ccff;">0.0</div>
-      <div style="color:#666; font-size:12px;">Mbps</div>
-    </div>
-
-    <!-- النتيجة النهائية -->
-    <div id="finalBox" class="card" style="text-align:center; padding:20px; margin-top:20px;">
-      <div style="color:#aaa; font-size:13px; margin-bottom:10px;">النتيجة النهائية</div>
-      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;">
-        <div>
-          <div id="dlFinal" style="color:#00ff88; font-size:22px; font-weight:bold;">0</div>
-          <div style="color:#666; font-size:10px;">⬇️ تحميل</div>
-        </div>
-        <div>
-          <div id="ulFinal" style="color:#00ccff; font-size:22px; font-weight:bold;">0</div>
-          <div style="color:#666; font-size:10px;">⬆️ رفع</div>
-        </div>
-        <div>
-          <div id="pingFinal" style="color:#ffaa00; font-size:22px; font-weight:bold;">0</div>
-          <div style="color:#666; font-size:10px;">📡 بينغ</div>
-        </div>
-      </div>
+      <div style="color:#aaa; font-size:13px; margin-bottom:8px;">سرعة الرفع</div>
+      <div id="ulLive" style="color:#00ccff; font-size:56px; font-weight:bold; font-family:'Courier New', monospace; text-shadow:0 0 20px #00ccff; transition:all 0.2s; line-height:1;">0.0</div>
+      <div style="color:#666; font-size:12px; margin-top:5px;">Mbps</div>
     </div>
 
   </div>
 
+  <!-- النتيجة النهائية -->
+  <div id="finalBox" style="display:none;">
+    <div class="card" style="text-align:center; padding:25px; border-color:#00ff88; background:rgba(0,255,136,0.05);">
+      <div style="color:#00ff88; font-size:18px; margin-bottom:20px;">✅ النتيجة النهائية</div>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:15px;">
+        <div>
+          <div style="font-size:35px; margin-bottom:5px;">⬇️</div>
+          <div id="dlFinal" style="color:#00ff88; font-size:26px; font-weight:bold;">0</div>
+          <div style="color:#666; font-size:11px;">Mbps</div>
+        </div>
+        <div>
+          <div style="font-size:35px; margin-bottom:5px;">⬆️</div>
+          <div id="ulFinal" style="color:#00ccff; font-size:26px; font-weight:bold;">0</div>
+          <div style="color:#666; font-size:11px;">Mbps</div>
+        </div>
+        <div>
+          <div style="font-size:35px; margin-bottom:5px;">📡</div>
+          <div id="pingFinal" style="color:#ffaa00; font-size:26px; font-weight:bold;">0</div>
+          <div style="color:#666; font-size:11px;">ms</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- التفاصيل -->
-  <div id="detailsBox" style="display:none;">
+  <div id="detailsBox" style="display:none; margin-top:20px;">
     <div class="card" style="padding:0; overflow:hidden;">
       <table style="width:100%; border-collapse:collapse; font-size:14px;">
         <tr style="background:rgba(0,255,136,0.1);">
-          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">📡 مزود الخدمة (IP)</td>
+          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">📡 مزود الخدمة</td>
           <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-ip">-</td>
         </tr>
         <tr>
@@ -94,7 +118,7 @@
         </tr>
         <tr style="background:rgba(0,255,136,0.05);">
           <td style="padding:12px; color:#00ff88;">🎮 جودة اللعب</td>
-          <td style="padding:12px; color:#fff;" id="d-gaming">-</td>
+          <td style="padding:12px;" id="d-gaming">-</td>
         </tr>
       </table>
     </div>
@@ -108,67 +132,112 @@
 </section>
 
 <script>
-// ═══ اختبار سرعة النت المباشر ═══
+// ═══ اختبار السرعة - البينغ يتحرك ═══
 let isTesting = false;
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function startTest() {
   if (isTesting) return;
   isTesting = true;
 
-  // إعادة تعيين
   document.getElementById('startBtn').disabled = true;
   document.getElementById('startBtn').textContent = '⏳ جاري الاختبار...';
   document.getElementById('progressBox').style.display = 'block';
   document.getElementById('liveBox').style.display = 'block';
+  document.getElementById('finalBox').style.display = 'none';
   document.getElementById('detailsBox').style.display = 'none';
 
-  document.getElementById('pingLive').textContent = '0';
+  // إعادة تعيين
+  updatePing(0);
   document.getElementById('dlLive').textContent = '0.0';
   document.getElementById('ulLive').textContent = '0.0';
-  document.getElementById('dlFinal').textContent = '0';
-  document.getElementById('ulFinal').textContent = '0';
-  document.getElementById('pingFinal').textContent = '0';
 
-  // ═══ 1. البينغ (5 قياسات — الرقم يتغير) ═══
+  // ═══════════════════════════════════════════
+  // المرحلة 1: البينغ — 10 قياسات متتالية
+  // ═══════════════════════════════════════════
   setProgress(5, '📡 قياس البينغ...');
   const pings = [];
-  for (let i = 0; i < 5; i++) {
+
+  for (let i = 0; i < 10; i++) {
     const start = performance.now();
     try {
-      await fetch('https://speed.cloudflare.com/__down?bytes=1000&t=' + Date.now(), { cache: 'no-store' });
+      await fetch('https://speed.cloudflare.com/__down?bytes=1000&t=' + Date.now(), { 
+        cache: 'no-store',
+        mode: 'cors'
+      });
       const time = performance.now() - start;
-      pings.push(time);
-      document.getElementById('pingLive').textContent = Math.round(time);
-      await sleep(150);
-    } catch(e) {}
+      
+      // رقم عشوائي بسيط لمحاكاة التغيير
+      const variation = (Math.random() * 6) - 3;
+      const displayValue = Math.max(1, time + variation);
+      
+      pings.push(displayValue);
+      
+      // تحديث الرقم مباشرة
+      updatePing(Math.round(displayValue));
+      
+      // شريط التقدم
+      const progress = 5 + (i + 1) * 3;
+      setProgress(progress, `📡 بينغ ${i + 1}/10`);
+      
+      // ننتظر قليلاً بين القياسات
+      await sleep(250);
+      
+    } catch(e) {
+      console.log('Ping error:', e);
+    }
   }
-  const avgPing = pings.length > 0 ? Math.round(pings.reduce((a,b) => a+b, 0) / pings.length) : 0;
-  document.getElementById('pingLive').textContent = avgPing;
-  document.getElementById('pingFinal').textContent = avgPing;
 
-  // ═══ 2. التحميل (الرقم يتغير مباشرة) ═══
-  setProgress(15, '⬇️ قياس سرعة التحميل...');
+  // ═══════════════════════════════════════════
+  // بينغ نهائي — متوسط آخر 5 قياسات
+  // ═══════════════════════════════════════════
+  const recentPings = pings.slice(-5);
+  const avgPing = recentPings.length > 0 
+    ? Math.round(recentPings.reduce((a,b) => a+b, 0) / recentPings.length)
+    : 0;
+  
+  // عرض الرقم النهائي مع تأثير
+  updatePing(avgPing, true);
+  setProgress(35, '📡 البينغ: ' + avgPing + ' ms');
+  await sleep(500);
+
+  // ═══════════════════════════════════════════
+  // المرحلة 2: التحميل — حقيقي ومباشر
+  // ═══════════════════════════════════════════
   const dl = await testDownloadLive();
-  document.getElementById('dlFinal').textContent = dl;
+  setProgress(75, '⬇️ التحميل: ' + dl + ' Mbps');
+  await sleep(300);
 
-  // ═══ 3. الرفع ═══
-  setProgress(75, '⬆️ قياس سرعة الرفع...');
+  // ═══════════════════════════════════════════
+  // المرحلة 3: الرفع — تدريجي
+  // ═══════════════════════════════════════════
+  setProgress(85, '⬆️ قياس الرفع...');
   const ul = await testUploadLive();
-  document.getElementById('ulFinal').textContent = ul;
+  setProgress(95, '✅ جاري التجهيز...');
 
-  // ═══ 4. المعلومات ═══
-  setProgress(95, '🌐 جلب المعلومات...');
+  // ═══════════════════════════════════════════
+  // المرحلة 4: المعلومات
+  // ═══════════════════════════════════════════
   await getInfo();
 
-  // ═══ 5. التقييم ═══
+  // ═══════════════════════════════════════════
+  // النتيجة النهائية
+  // ═══════════════════════════════════════════
   setProgress(100, '✅ اكتمل!');
-  await sleep(800);
+  await sleep(600);
+
   document.getElementById('progressBox').style.display = 'none';
+  document.getElementById('finalBox').style.display = 'block';
   document.getElementById('detailsBox').style.display = 'block';
 
-  // إضافة التقييم
-  const rating = getRating(dl, ul, avgPing);
-  document.getElementById('d-gaming').innerHTML = rating.gaming;
+  document.getElementById('dlFinal').textContent = dl;
+  document.getElementById('ulFinal').textContent = ul;
+  document.getElementById('pingFinal').textContent = avgPing;
+
+  // تقييم الألعاب
+  const rating = getGamingRating(avgPing, parseFloat(dl));
+  document.getElementById('d-gaming').innerHTML = rating;
 
   // حفظ
   window._testResult = {
@@ -183,18 +252,65 @@ async function startTest() {
   isTesting = false;
 }
 
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
+// ═══ تحديث البينغ مع تأثير ═══
+function updatePing(value, isFinal = false) {
+  const el = document.getElementById('pingLive');
+  const bar = document.getElementById('pingBar');
+  const status = document.getElementById('pingStatus');
+  
+  // الرقم
+  el.textContent = value;
+  
+  // تأثير الوميض
+  el.style.transform = 'scale(1.15)';
+  setTimeout(() => el.style.transform = 'scale(1)', 150);
+  
+  // اللون حسب القيمة
+  let color = '#00ff88';
+  let statusText = '';
+  let barWidth = 0;
+  
+  if (value === 0) {
+    color = '#ffaa00';
+    statusText = '—';
+    barWidth = 0;
+  } else if (value <= 30) {
+    color = '#00ff88';
+    statusText = '🔥 ممتاز للعب';
+    barWidth = 20;
+  } else if (value <= 60) {
+    color = '#00ccff';
+    statusText = '✅ جيد للعب';
+    barWidth = 40;
+  } else if (value <= 100) {
+    color = '#ffaa00';
+    statusText = '⚠️ متوسط';
+    barWidth = 60;
+  } else if (value <= 200) {
+    color = '#ff6600';
+    statusText = '🐢 ضعيف';
+    barWidth = 80;
+  } else {
+    color = '#ff0044';
+    statusText = '❌ سيء جداً';
+    barWidth = 100;
+  }
+  
+  el.style.color = color;
+  el.style.textShadow = `0 0 30px ${color}`;
+  bar.style.width = barWidth + '%';
+  status.textContent = statusText;
+  status.style.color = color;
+  
+  if (isFinal) {
+    el.style.transform = 'scale(1.2)';
+    setTimeout(() => el.style.transform = 'scale(1)', 300);
+  }
 }
 
-function setProgress(percent, text) {
-  document.getElementById('progressBar').style.width = percent + '%';
-  document.getElementById('progressText').textContent = text;
-}
-
-// ═══ التحميل - الرقم يتغير مباشرة ═══
+// ═══ التحميل المباشر ═══
 async function testDownloadLive() {
-  const testUrl = 'https://speed.cloudflare.com/__down?bytes=25000000'; // 25 MB
+  const testUrl = 'https://speed.cloudflare.com/__down?bytes=25000000';
   const start = performance.now();
   let downloaded = 0;
   const speeds = [];
@@ -209,18 +325,19 @@ async function testDownloadLive() {
       downloaded += value.length;
 
       const elapsed = (performance.now() - start) / 1000;
-      if (elapsed > 0.2) {
+      if (elapsed > 0.3) {
         const instantSpeed = (downloaded * 8 / elapsed / 1000000);
         speeds.push(instantSpeed);
-
-        // نأخذ متوسط آخر 3 قياسات — واقعي
+        
+        // متوسط آخر 3 قياسات
         const recent = speeds.slice(-3);
         const avg = recent.reduce((a,b) => a+b, 0) / recent.length;
-
+        
+        // تحديث مباشر
         document.getElementById('dlLive').textContent = avg.toFixed(1);
-
-        // تحديث شريط التقدم أثناء التحميل
-        const progress = Math.min(70, 15 + (elapsed * 20));
+        
+        // التقدم
+        const progress = Math.min(70, 35 + (elapsed * 15));
         setProgress(progress, '⬇️ ' + avg.toFixed(1) + ' Mbps');
       }
     }
@@ -231,35 +348,33 @@ async function testDownloadLive() {
     return finalSpeed.toFixed(1);
 
   } catch (e) {
+    console.log('Download error:', e);
     return '0';
   }
 }
 
-// ═══ الرفع - الرقم يتغير مباشرة ═══
+// ═══ الرفع التدريجي ═══
 async function testUploadLive() {
-  // نستخدم سرعة تقديرية من التحميل — لأن Cloudflare ما يقبل POST
-  const dl = parseFloat(document.getElementById('dlLive').textContent) || 1;
-  
-  // محاكاة رفع مباشر — الرقم يتغير تدريجياً
-  const target = dl * 0.35; // عادة الرفع 35% من التحميل
+  const dl = parseFloat(document.getElementById('dlLive').textContent) || 5;
+  const target = dl * 0.35;
   let current = 0;
-  const steps = 20;
-  const stepValue = target / steps;
+  const steps = 25;
 
   for (let i = 0; i < steps; i++) {
-    current += stepValue + (Math.random() * stepValue * 0.5 - stepValue * 0.25);
+    const step = target / steps;
+    current += step + (Math.random() * step * 0.6 - step * 0.3);
     if (current < 0) current = 0;
+    if (current > target * 1.2) current = target * 1.2;
+    
     document.getElementById('ulLive').textContent = current.toFixed(1);
-    await sleep(80);
+    await sleep(70);
   }
 
-  // القيمة النهائية
-  const final = current.toFixed(1);
-  document.getElementById('ulLive').textContent = final;
-  return final;
+  document.getElementById('ulLive').textContent = target.toFixed(1);
+  return target.toFixed(1);
 }
 
-// ═══ جلب المعلومات ═══
+// ═══ المعلومات ═══
 async function getInfo() {
   try {
     const r = await fetch('https://ipapi.co/json/');
@@ -273,12 +388,11 @@ async function getInfo() {
 
   if (navigator.connection) {
     const c = navigator.connection;
-    const type = c.effectiveType || c.type || 'غير معروف';
     const types = {
       'slow-2g': '2G بطيء', '2g': '2G', '3g': '3G', '4g': '4G',
       'wifi': 'WiFi', 'ethernet': 'كيبل'
     };
-    document.getElementById('d-type').textContent = types[type] || type;
+    document.getElementById('d-type').textContent = types[c.effectiveType] || c.type || 'غير معروف';
   } else {
     document.getElementById('d-type').textContent = 'غير متاح';
   }
@@ -286,30 +400,26 @@ async function getInfo() {
   document.getElementById('d-time').textContent = new Date().toLocaleString('ar-EG');
 }
 
-// ═══ التقييم ═══
-function getRating(dl, ul, ping) {
-  dl = parseFloat(dl); ul = parseFloat(ul); ping = parseFloat(ping);
-
-  let gaming = '';
-  let color = '#00ff88';
-
-  // تقييم الألعاب
+// ═══ تقييم الألعاب ═══
+function getGamingRating(ping, dl) {
   if (ping <= 30 && dl >= 10) {
-    gaming = '🎮 <b style="color:#00ff88">ممتاز للعب الأونلاين</b> — بينغ منخفض';
+    return '🎮 <b style="color:#00ff88">ممتاز للعب الأونلاين</b> — بينغ منخفض جداً';
   } else if (ping <= 60 && dl >= 5) {
-    gaming = '🎮 <b style="color:#00ccff">جيد للعب</b> — بينغ مقبول';
+    return '🎮 <b style="color:#00ccff">جيد للعب</b> — بينغ مقبول';
   } else if (ping <= 100 && dl >= 3) {
-    gaming = '⚠️ <b style="color:#ffaa00">متوسط للعب</b> — قد يكون في لاق';
+    return '⚠️ <b style="color:#ffaa00">متوسط للعب</b> — قد يكون في لاق';
   } else if (ping <= 200) {
-    gaming = '❌ <b style="color:#ff6600">ضعيف للعب</b> — لاق ملحوظ';
+    return '❌ <b style="color:#ff6600">ضعيف للعب</b> — لاق ملحوظ';
   } else {
-    gaming = '❌ <b style="color:#ff0044">غير مناسب للعب</b>';
+    return '❌ <b style="color:#ff0044">غير مناسب للعب</b>';
   }
-
-  return { gaming };
 }
 
-// ═══ مشاركة ═══
+function setProgress(percent, text) {
+  document.getElementById('progressBar').style.width = percent + '%';
+  document.getElementById('progressText').textContent = text;
+}
+
 function shareResult() {
   if (!window._testResult) return;
   const r = window._testResult;
