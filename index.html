@@ -984,6 +984,433 @@ function shareResult() {
 
 
 
+
+<!-- مساعد ذكي صوتي - محادثة كاملة -->
+<section class="section fade-in" id="voice-ai">
+  <h2>🎤 مساعد ذكي صوتي</h2>
+  <p style="text-align:center; color:#aaa; margin-bottom:25px;">
+    اكتب أو تكلم — وراح يرد عليك بصوت
+  </p>
+
+  <div class="card" style="padding:0; overflow:hidden; border-color:#00ff88; box-shadow:0 0 40px rgba(0,255,136,0.15);">
+
+    <!-- الرأس -->
+    <div style="padding:15px 20px; background:linear-gradient(135deg, #00ff88, #00cc66); display:flex; align-items:center; gap:10px;">
+      <div style="width:44px; height:44px; background:#000; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 0 15px rgba(0,0,0,0.5);">🎤</div>
+      <div style="flex:1;">
+        <div style="color:#000; font-weight:bold; font-size:16px;">Karrar Voice AI</div>
+        <div style="color:#000; font-size:12px; opacity:0.75; display:flex; align-items:center; gap:5px;">
+          <span style="width:8px; height:8px; background:#00ff00; border-radius:50%; animation:blink 1.5s infinite; display:inline-block;"></span>
+          جاهز للمحادثة
+        </div>
+      </div>
+      <button onclick="clearVoiceChat()" title="محو" style="width:36px; height:36px; background:rgba(0,0,0,0.2); border:none; border-radius:50%; color:#000; font-size:16px; cursor:pointer;">🔄</button>
+    </div>
+
+    <!-- الرسائل -->
+    <div id="voiceChatMessages" style="height:400px; overflow-y:auto; padding:20px; background:linear-gradient(180deg, #0a0a0a, #050505); display:flex; flex-direction:column; gap:12px;">
+
+      <div style="display:flex; gap:10px; align-items:flex-start;">
+        <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; box-shadow:0 0 15px rgba(0,255,136,0.5);">🎤</div>
+        <div style="background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.7; border:1px solid rgba(0,255,136,0.2);">
+          أهلاً! أنا <b style="color:#00ff88">Karrar Voice AI</b> 🎤<br>
+          اكتب أو اضغط 🎙️ وتكلم — وراح أرد عليك بصوت!
+        </div>
+      </div>
+
+    </div>
+
+    <!-- الإدخال -->
+    <div style="padding:12px; background:#111; border-top:1px solid rgba(0,255,136,0.4); display:flex; gap:8px; align-items:center;">
+
+      <!-- زر الصوت -->
+      <button 
+        onclick="toggleVoiceInput()" 
+        id="voiceMicBtn"
+        style="
+          width:50px; 
+          height:50px; 
+          background:linear-gradient(135deg, #ff0044, #cc0033); 
+          color:#fff; 
+          border:none; 
+          border-radius:50%; 
+          cursor:pointer; 
+          display:flex; 
+          align-items:center; 
+          justify-content:center;
+          font-size:22px;
+          box-shadow:0 0 20px rgba(255,0,68,0.4);
+          transition:0.3s;
+          flex-shrink:0;
+        "
+        title="تكلم"
+      >🎙️</button>
+
+      <!-- حقل النص -->
+      <input 
+        type="text" 
+        id="voiceChatInput" 
+        placeholder="اكتب سؤالك أو اضغط 🎙️..."
+        onkeypress="if(event.key==='Enter' && !event.shiftKey) sendVoiceMessage()"
+        autocomplete="off"
+        style="flex:1; padding:14px 20px; background:#1a1a1a; color:#fff; border:2px solid rgba(0,255,136,0.3); border-radius:28px; font-size:15px; outline:none; transition:0.3s; font-family:inherit;"
+        onfocus="this.style.borderColor='#00ff88'; this.style.boxShadow='0 0 20px rgba(0,255,136,0.3)'"
+        onblur="this.style.borderColor='rgba(0,255,136,0.3)'; this.style.boxShadow='none'"
+      >
+
+      <!-- زر الإرسال -->
+      <button 
+        onclick="sendVoiceMessage()" 
+        id="voiceSendBtn"
+        style="
+          width:50px; 
+          height:50px; 
+          background:linear-gradient(135deg, #00ff88, #00cc66); 
+          color:#000; 
+          border:none; 
+          border-radius:50%; 
+          cursor:pointer; 
+          display:flex; 
+          align-items:center; 
+          justify-content:center;
+          box-shadow:0 0 20px rgba(0,255,136,0.5);
+          transition:0.3s;
+          flex-shrink:0;
+        "
+        title="إرسال"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="#000"/>
+        </svg>
+      </button>
+
+    </div>
+
+    <!-- شريط الصوت — يظهر لما تتكلم -->
+    <div id="voiceWave" style="display:none; padding:12px; background:#0a0a0a; border-top:1px solid rgba(255,0,68,0.3); text-align:center;">
+      <div style="color:#ff0044; font-size:13px; margin-bottom:8px;">🎙️ جاري الاستماع...</div>
+      <div style="display:flex; justify-content:center; align-items:center; gap:4px; height:30px;">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- أزرار سريعة -->
+  <div style="text-align:center; margin-top:20px;">
+    <p style="color:#aaa; font-size:13px; margin-bottom:10px;">💡 جرب تقول:</p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+      <button onclick="quickVoiceAsk('من أنت؟')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">🤖 من أنت؟</button>
+      <button onclick="quickVoiceAsk('اكتب لي بيت شعر')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">🎭 بيت شعر</button>
+      <button onclick="quickVoiceAsk('اعطني نصيحة اليوم')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">💡 نصيحة</button>
+      <button onclick="quickVoiceAsk('احكي لي قصة قصيرة')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">📖 قصة</button>
+    </div>
+  </div>
+
+</section>
+
+<style>
+.voice-active {
+  animation: voicePulse 0.8s infinite !important;
+}
+@keyframes voicePulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255,0,68,0.5); }
+  50% { transform: scale(1.15); box-shadow: 0 0 40px rgba(255,0,68,1); }
+}
+
+.wave-bar {
+  width: 4px;
+  background: #ff0044;
+  border-radius: 2px;
+  height: 10px;
+  animation: waveAnim 0.8s infinite;
+}
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.4s; }
+.wave-bar:nth-child(6) { animation-delay: 0.5s; }
+.wave-bar:nth-child(7) { animation-delay: 0.6s; }
+
+@keyframes waveAnim {
+  0%, 100% { height: 10px; }
+  50% { height: 30px; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+// ═══ Karrar Voice AI ═══
+const VOICE_AI_API = 'https://text.pollinations.ai/';
+const VOICE_SYSTEM = encodeURIComponent(
+  'أنت مساعد ذكي اسمه Karrar Voice AI. تجاوب بالعربي الفصيح المبسط. ردودك قصيرة وواضحة (2-4 أسطر) — لأنها راح تنطق بصوت. كن ودوداً ومفيداً.'
+);
+
+let voiceRecognition = null;
+let isListeningVoice = false;
+let voiceSynth = window.speechSynthesis;
+const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+// ═══ إرسال رسالة ═══
+async function sendVoiceMessage() {
+  const input = document.getElementById('voiceChatInput');
+  const message = input.value.trim();
+  if (!message) return;
+
+  addVoiceMessage(message, 'user');
+  input.value = '';
+  input.focus();
+
+  const loadingId = addVoiceLoading();
+
+  try {
+    const url = VOICE_AI_API + encodeURIComponent(message) + '?model=openai&system=' + VOICE_SYSTEM;
+    const response = await fetch(url);
+    const reply = await response.text();
+    removeVoiceLoading(loadingId);
+    typeVoiceMessage(reply.trim());
+  } catch (err) {
+    removeVoiceLoading(loadingId);
+    addVoiceMessage('❌ صار خطأ — جرب مرة ثانية', 'ai');
+  }
+}
+
+// ═══ إضافة رسالة ═══
+function addVoiceMessage(text, type) {
+  const container = document.getElementById('voiceChatMessages');
+  const div = document.createElement('div');
+  div.style.display = 'flex';
+  div.style.gap = '10px';
+  div.style.alignItems = 'flex-start';
+  div.style.animation = 'slideIn 0.3s ease';
+
+  if (type === 'user') {
+    div.style.flexDirection = 'row-reverse';
+    div.innerHTML = `
+      <div style="width:35px; height:35px; background:linear-gradient(135deg, #00ccff, #0099cc); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; box-shadow:0 0 15px rgba(0,204,255,0.4);">👤</div>
+      <div style="background:linear-gradient(135deg, #003d2b, #002a1e); padding:12px 16px; border-radius:15px; border-top-left-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.6; word-wrap:break-word; border:1px solid rgba(0,204,255,0.3);">${escapeVoiceHtml(text)}</div>
+    `;
+  } else {
+    div.innerHTML = `
+      <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; box-shadow:0 0 15px rgba(0,255,136,0.5);">🎤</div>
+      <div style="background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.7; word-wrap:break-word; border:1px solid rgba(0,255,136,0.2);">${escapeVoiceHtml(text).replace(/\n/g, '<br>')}</div>
+    `;
+  }
+
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+// ═══ تأثير الكتابة + نطق ═══
+function typeVoiceMessage(text) {
+  const container = document.getElementById('voiceChatMessages');
+  const div = document.createElement('div');
+  div.style.display = 'flex';
+  div.style.gap = '10px';
+  div.style.alignItems = 'flex-start';
+  div.style.animation = 'slideIn 0.3s ease';
+
+  const bubble = document.createElement('div');
+  bubble.style.cssText = 'background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.7; word-wrap:break-word; border:1px solid rgba(0,255,136,0.2);';
+
+  div.innerHTML = `
+    <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; box-shadow:0 0 15px rgba(0,255,136,0.5);">🎤</div>
+  `;
+  div.appendChild(bubble);
+  container.appendChild(div);
+
+  let i = 0;
+  const speed = 18;
+  const interval = setInterval(() => {
+    if (i < text.length) {
+      bubble.innerHTML = escapeVoiceHtml(text.substring(0, i + 1)).replace(/\n/g, '<br>');
+      i++;
+      container.scrollTop = container.scrollHeight;
+    } else {
+      clearInterval(interval);
+      // ابدأ النطق بعد الكتابة
+      speakVoiceReply(text);
+    }
+  }, speed);
+}
+
+// ═══ نطق الرد بالعربي ═══
+function speakVoiceReply(text) {
+  if (!voiceSynth) return;
+
+  voiceSynth.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'ar-SA';
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+
+  const voices = voiceSynth.getVoices();
+  const arabicVoice = voices.find(v => v.lang && v.lang.startsWith('ar'));
+  if (arabicVoice) utterance.voice = arabicVoice;
+
+  utterance.onstart = () => {
+    document.getElementById('voiceMicBtn').style.boxShadow = '0 0 40px rgba(0,255,136,1)';
+  };
+
+  utterance.onend = () => {
+    document.getElementById('voiceMicBtn').style.boxShadow = '0 0 20px rgba(255,0,68,0.4)';
+  };
+
+  voiceSynth.speak(utterance);
+}
+
+// ═══ إدخال صوتي ═══
+function toggleVoiceInput() {
+  if (!SpeechRecognitionAPI) {
+    alert('❌ متصفحك ما يدعم التعرف على الصوت — جرب Chrome');
+    return;
+  }
+
+  if (isListeningVoice) {
+    stopVoiceInput();
+    return;
+  }
+
+  startVoiceInput();
+}
+
+function startVoiceInput() {
+  if (isListeningVoice) return;
+  isListeningVoice = true;
+
+  voiceRecognition = new SpeechRecognitionAPI();
+  voiceRecognition.lang = 'ar-SA';
+  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = true;
+  voiceRecognition.maxAlternatives = 1;
+
+  document.getElementById('voiceMicBtn').classList.add('voice-active');
+  document.getElementById('voiceWave').style.display = 'block';
+  document.getElementById('voiceChatInput').placeholder = '🎙️ جاري الاستماع...';
+
+  voiceRecognition.start();
+
+  voiceRecognition.onresult = (event) => {
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      transcript += event.results[i][0].transcript;
+    }
+    document.getElementById('voiceChatInput').value = transcript;
+
+    if (event.results[event.results.length - 1].isFinal) {
+      stopVoiceInput();
+      setTimeout(() => sendVoiceMessage(), 300);
+    }
+  };
+
+  voiceRecognition.onerror = (event) => {
+    console.log('Voice error:', event.error);
+    stopVoiceInput();
+  };
+
+  voiceRecognition.onend = () => {
+    if (isListeningVoice) stopVoiceInput();
+  };
+}
+
+function stopVoiceInput() {
+  isListeningVoice = false;
+  if (voiceRecognition) {
+    try { voiceRecognition.stop(); } catch(e) {}
+  }
+  document.getElementById('voiceMicBtn').classList.remove('voice-active');
+  document.getElementById('voiceWave').style.display = 'none';
+  document.getElementById('voiceChatInput').placeholder = 'اكتب سؤالك أو اضغط 🎙️...';
+}
+
+// ═══ سؤال سريع ═══
+function quickVoiceAsk(text) {
+  document.getElementById('voiceChatInput').value = text;
+  sendVoiceMessage();
+}
+
+// ═══ محو المحادثة ═══
+function clearVoiceChat() {
+  if (!confirm('محو المحادثة؟')) return;
+  const container = document.getElementById('voiceChatMessages');
+  container.innerHTML = `
+    <div style="display:flex; gap:10px; align-items:flex-start;">
+      <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">🎤</div>
+      <div style="background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.7; border:1px solid rgba(0,255,136,0.2);">
+        تم محو المحادثة ✅<br>اسألني أي شي جديد.
+      </div>
+    </div>
+  `;
+  if (voiceSynth) voiceSynth.cancel();
+}
+
+// ═══ loading ═══
+function addVoiceLoading() {
+  const container = document.getElementById('voiceChatMessages');
+  const id = 'voiceLoading_' + Date.now();
+  const div = document.createElement('div');
+  div.id = id;
+  div.style.display = 'flex';
+  div.style.gap = '10px';
+  div.style.alignItems = 'flex-start';
+  div.innerHTML = `
+    <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">🎤</div>
+    <div style="background:#1a1a1a; padding:14px 18px; border-radius:15px; display:flex; gap:5px; align-items:center; border:1px solid rgba(0,255,136,0.2);">
+      <span style="width:8px; height:8px; background:#00ff88; border-radius:50%; animation:typing 1.4s infinite;"></span>
+      <span style="width:8px; height:8px; background:#00ff88; border-radius:50%; animation:typing 1.4s infinite 0.2s;"></span>
+      <span style="width:8px; height:8px; background:#00ff88; border-radius:50%; animation:typing 1.4s infinite 0.4s;"></span>
+    </div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+function removeVoiceLoading(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function escapeVoiceHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// تحميل الأصوات
+if (voiceSynth) {
+  voiceSynth.onvoiceschanged = () => voiceSynth.getVoices();
+}
+</script>
+
+<style>
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+</style>
+
+
 <section class="section fade-in" id="contact">
   <h2>تواصل معي</h2>
   <p style="text-align:center; color:#aaa; margin-bottom:20px;">تقدر تتواصل معي على المنصات التالية:</p>
