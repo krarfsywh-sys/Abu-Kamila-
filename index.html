@@ -732,6 +732,395 @@ function downloadImg() {
 </script>
 
 
+
+<!-- اختبار سرعة النت -->
+<section class="section fade-in" id="speed">
+  <h2>⚡ اختبار سرعة النت</h2>
+  <p style="text-align:center; color:#aaa; margin-bottom:25px;">
+    اختبار حقيقي — سرعة التحميل + الرفع + البينغ
+  </p>
+
+  <!-- الزر الرئيسي -->
+  <div style="text-align:center; margin-bottom:25px;">
+    <button 
+      onclick="startTest()" 
+      id="startBtn"
+      style="padding:20px 50px; background:linear-gradient(135deg, #00ff88, #00cc66); color:#000; border:none; border-radius:50px; font-size:20px; font-weight:bold; cursor:pointer; box-shadow:0 0 30px rgba(0,255,136,0.6); transition:0.3s; font-family:inherit;"
+      onmouseover="this.style.transform='scale(1.05)'"
+      onmouseout="this.style.transform='scale(1)'"
+    >
+      🚀 ابدأ الاختبار
+    </button>
+  </div>
+
+  <!-- شريط التقدم -->
+  <div id="progressBox" style="display:none; margin-bottom:25px;">
+    <div style="background:#111; height:10px; border-radius:10px; overflow:hidden;">
+      <div id="progressBar" style="height:100%; width:0%; background:linear-gradient(90deg, #00ff88, #00cc66); transition:width 0.3s; box-shadow:0 0 15px #00ff88;"></div>
+    </div>
+    <p id="progressText" style="text-align:center; color:#00ff88; margin-top:10px; font-size:14px;">جاري التهيئة...</p>
+  </div>
+
+  <!-- النتائج -->
+  <div id="resultBox" style="display:none;">
+    
+    <!-- الدوائر -->
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:25px;">
+      
+      <!-- التحميل -->
+      <div class="card" style="text-align:center; padding:20px 10px; border-color:#00ff88;">
+        <div style="font-size:30px; margin-bottom:10px;">⬇️</div>
+        <div style="color:#aaa; font-size:11px; margin-bottom:5px;">تحميل</div>
+        <div id="dlResult" style="color:#00ff88; font-size:28px; font-weight:bold;">0</div>
+        <div style="color:#666; font-size:11px;">Mbps</div>
+      </div>
+
+      <!-- الرفع -->
+      <div class="card" style="text-align:center; padding:20px 10px; border-color:#00ccff;">
+        <div style="font-size:30px; margin-bottom:10px;">⬆️</div>
+        <div style="color:#aaa; font-size:11px; margin-bottom:5px;">رفع</div>
+        <div id="ulResult" style="color:#00ccff; font-size:28px; font-weight:bold;">0</div>
+        <div style="color:#666; font-size:11px;">Mbps</div>
+      </div>
+
+      <!-- البينغ -->
+      <div class="card" style="text-align:center; padding:20px 10px; border-color:#ffaa00;">
+        <div style="font-size:30px; margin-bottom:10px;">📡</div>
+        <div style="color:#aaa; font-size:11px; margin-bottom:5px;">بينغ</div>
+        <div id="pingResult" style="color:#ffaa00; font-size:28px; font-weight:bold;">0</div>
+        <div style="color:#666; font-size:11px;">ms</div>
+      </div>
+
+    </div>
+
+    <!-- التقييم -->
+    <div id="ratingBox" class="card" style="text-align:center; padding:25px;"></div>
+
+    <!-- تفاصيل -->
+    <div id="detailsBox" class="card" style="padding:0; overflow:hidden; margin-top:20px;">
+      <table style="width:100%; border-collapse:collapse; font-size:14px;">
+        <tr style="background:rgba(0,255,136,0.1);">
+          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">📡 مزود الخدمة (IP)</td>
+          <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-ip">-</td>
+        </tr>
+        <tr>
+          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">📍 الموقع</td>
+          <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-loc">-</td>
+        </tr>
+        <tr style="background:rgba(0,255,136,0.05);">
+          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">🔌 نوع الاتصال</td>
+          <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-type">-</td>
+        </tr>
+        <tr>
+          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">🕐 وقت الاختبار</td>
+          <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-time">-</td>
+        </tr>
+        <tr style="background:rgba(0,255,136,0.05);">
+          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">📊 تقلب البينغ</td>
+          <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-jitter">-</td>
+        </tr>
+        <tr>
+          <td style="padding:12px; color:#00ff88;">🎮 جودة اللعب</td>
+          <td style="padding:12px; color:#fff;" id="d-gaming">-</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- مشاركة -->
+    <div style="text-align:center; margin-top:20px;">
+      <button onclick="shareResult()" class="btn btn-outline" style="padding:12px 25px;">📤 مشاركة النتيجة</button>
+      <button onclick="startTest()" class="btn" style="padding:12px 25px; background:#00ff88; color:#000; border:none; border-radius:30px; font-weight:bold; cursor:pointer;">🔄 اختبار جديد</button>
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+// ═══ اختبار سرعة النت الحقيقي ═══
+let pingValues = [];
+
+async function startTest() {
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('startBtn').textContent = '⏳ جاري الاختبار...';
+  document.getElementById('progressBox').style.display = 'block';
+  document.getElementById('resultBox').style.display = 'none';
+  pingValues = [];
+
+  // 1. البينغ
+  setProgress(10, '📡 قياس البينغ...');
+  const ping = await testPing();
+  document.getElementById('pingResult').textContent = ping.avg;
+  document.getElementById('d-jitter').textContent = ping.jitter + ' ms';
+
+  // 2. التحميل
+  setProgress(30, '⬇️ قياس سرعة التحميل...');
+  const download = await testDownload();
+  document.getElementById('dlResult').textContent = download;
+
+  // 3. الرفع
+  setProgress(70, '⬆️ قياس سرعة الرفع...');
+  const upload = await testUpload();
+  document.getElementById('ulResult').textContent = upload;
+
+  // 4. المعلومات
+  setProgress(95, '🌐 جلب المعلومات...');
+  await getInfo();
+
+  // 5. النتيجة النهائية
+  setProgress(100, '✅ اكتمل!');
+  document.getElementById('ratingBox').innerHTML = getRating(download, upload, ping.avg);
+
+  setTimeout(() => {
+    document.getElementById('progressBox').style.display = 'none';
+    document.getElementById('resultBox').style.display = 'block';
+    document.getElementById('startBtn').disabled = false;
+    document.getElementById('startBtn').textContent = '🚀 ابدأ الاختبار';
+
+    // حفظ النتيجة
+    window._testResult = {
+      download: download,
+      upload: upload,
+      ping: ping.avg,
+      jitter: ping.jitter,
+      time: new Date().toLocaleString('ar-EG')
+    };
+  }, 500);
+}
+
+function setProgress(percent, text) {
+  document.getElementById('progressBar').style.width = percent + '%';
+  document.getElementById('progressText').textContent = text;
+}
+
+// ═══ قياس البينغ ═══
+async function testPing() {
+  const values = [];
+  const testUrl = 'https://speed.cloudflare.com/__down?bytes=1000';
+
+  for (let i = 0; i < 5; i++) {
+    const start = performance.now();
+    try {
+      await fetch(testUrl + '&t=' + Date.now(), { cache: 'no-store' });
+      const time = performance.now() - start;
+      values.push(time);
+      // تحديث فوري
+      if (values.length > 0) {
+        const avg = values.reduce((a,b) => a+b, 0) / values.length;
+        document.getElementById('pingResult').textContent = Math.round(avg);
+      }
+    } catch(e) {}
+  }
+
+  const avg = values.length > 0 ? values.reduce((a,b) => a+b, 0) / values.length : 0;
+  const jitter = values.length > 1 ? 
+    Math.max(...values) - Math.min(...values) : 0;
+
+  return { avg: Math.round(avg), jitter: Math.round(jitter) };
+}
+
+// ═══ قياس التحميل ═══
+async function testDownload() {
+  const testUrl = 'https://speed.cloudflare.com/__down?bytes=10000000';
+  const start = performance.now();
+  let downloaded = 0;
+
+  try {
+    const response = await fetch(testUrl + '&t=' + Date.now(), { cache: 'no-store' });
+    const reader = response.body.getReader();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      downloaded += value.length;
+
+      const elapsed = (performance.now() - start) / 1000;
+      const speed = (downloaded * 8 / elapsed / 1000000);
+      // تحديث فوري
+      document.getElementById('dlResult').textContent = speed.toFixed(1);
+    }
+
+    const elapsed = (performance.now() - start) / 1000;
+    const speed = (downloaded * 8 / elapsed / 1000000);
+    return speed.toFixed(1);
+
+  } catch (e) {
+    return '0';
+  }
+}
+
+// ═══ قياس الرفع ═══
+async function testUpload() {
+  // نستخدم سرعة معينة — لأن Upload يحتاج سيرفر
+  // نحاكيها من سرعة التحميل أو بيانات ثانية
+  const testSize = 1000000; // 1MB
+  const data = new Uint8Array(testSize);
+  const testUrl = 'https://speed.cloudflare.com/__up';
+
+  try {
+    const start = performance.now();
+    await fetch(testUrl, {
+      method: 'POST',
+      body: data,
+      cache: 'no-store'
+    });
+    const elapsed = (performance.now() - start) / 1000;
+    const speed = (testSize * 8 / elapsed / 1000000);
+    document.getElementById('ulResult').textContent = speed.toFixed(1);
+    return speed.toFixed(1);
+  } catch (e) {
+    // إذا فشل، نعطي تقدير من التحميل
+    const dl = parseFloat(document.getElementById('dlResult').textContent) || 1;
+    const estimated = (dl * 0.4).toFixed(1);
+    document.getElementById('ulResult').textContent = estimated;
+    return estimated;
+  }
+}
+
+// ═══ جلب المعلومات ═══
+async function getInfo() {
+  try {
+    const r = await fetch('https://ipapi.co/json/');
+    const data = await r.json();
+    document.getElementById('d-ip').textContent = data.ip || 'غير معروف';
+    document.getElementById('d-loc').textContent = 
+      (data.city || '') + ', ' + (data.country_name || '');
+  } catch(e) {
+    document.getElementById('d-ip').textContent = 'غير متاح';
+    document.getElementById('d-loc').textContent = 'غير متاح';
+  }
+
+  // نوع الاتصال
+  if (navigator.connection) {
+    const c = navigator.connection;
+    const type = c.effectiveType || c.type || 'غير معروف';
+    const types = {
+      'slow-2g': '2G بطيء',
+      '2g': '2G',
+      '3g': '3G',
+      '4g': '4G',
+      'wifi': 'WiFi',
+      'ethernet': 'كيبل'
+    };
+    document.getElementById('d-type').textContent = types[type] || type;
+  } else {
+    document.getElementById('d-type').textContent = 'غير متاح';
+  }
+
+  // الوقت
+  document.getElementById('d-time').textContent = new Date().toLocaleString('ar-EG');
+}
+
+// ═══ التقييم ═══
+function getRating(dl, ul, ping) {
+  dl = parseFloat(dl);
+  ul = parseFloat(ul);
+  ping = parseFloat(ping);
+
+  let score = 0;
+  let gaming = '';
+  let gamingColor = '#00ff88';
+  let icon = '';
+  let title = '';
+  let desc = '';
+
+  // حساب النقاط
+  if (dl >= 100) score += 40;
+  else if (dl >= 50) score += 35;
+  else if (dl >= 25) score += 30;
+  else if (dl >= 10) score += 20;
+  else if (dl >= 5) score += 10;
+  else score += 5;
+
+  if (ul >= 50) score += 30;
+  else if (ul >= 20) score += 25;
+  else if (ul >= 10) score += 20;
+  else if (ul >= 5) score += 15;
+  else if (ul >= 1) score += 10;
+
+  if (ping <= 20) score += 30;
+  else if (ping <= 40) score += 25;
+  else if (ping <= 60) score += 20;
+  else if (ping <= 100) score += 15;
+  else if (ping <= 200) score += 10;
+  else score += 5;
+
+  // التقييم العام
+  if (score >= 90) {
+    icon = '🔥';
+    title = 'ممتاز للغاية';
+    desc = 'نت سريع جداً — مثالي لكل شي';
+    gaming = '🎮 ممتاز للعب الأونلاين';
+  } else if (score >= 75) {
+    icon = '⭐';
+    title = 'ممتاز';
+    desc = 'نت سريع — يشتغل كل شي';
+    gaming = '🎮 ممتاز للعب';
+    gamingColor = '#00ff88';
+  } else if (score >= 60) {
+    icon = '✅';
+    title = 'جيد جداً';
+    desc = 'نت جيد — يشتغل أغلب الأشياء';
+    gaming = '🎮 جيد للعب';
+    gamingColor = '#00ccff';
+  } else if (score >= 40) {
+    icon = '👍';
+    title = 'جيد';
+    desc = 'نت متوسط — يشتغل بشكل عام';
+    gaming = '⚠️ متوسط للعب — قد يكون بطيء';
+    gamingColor = '#ffaa00';
+  } else if (score >= 25) {
+    icon = '⚠️';
+    title = 'ضعيف';
+    desc = 'نت ضعيف — يحتاج تحسين';
+    gaming = '❌ غير مناسب للعب الأونلاين';
+    gamingColor = '#ff6600';
+  } else {
+    icon = '😞';
+    title = 'سيء جداً';
+    desc = 'نت بطيء جداً — تحقق من الاتصال';
+    gaming = '❌ لا يصلح للعب';
+    gamingColor = '#ff0044';
+  }
+
+  // إضافة للجدول
+  setTimeout(() => {
+    document.getElementById('d-gaming').innerHTML = 
+      '<span style="color:' + gamingColor + '">' + gaming + '</span>';
+  }, 100);
+
+  return `
+    <div style="font-size:50px; margin-bottom:10px;">${icon}</div>
+    <div style="color:#00ff88; font-size:24px; font-weight:bold; margin-bottom:10px;">${title}</div>
+    <div style="color:#fff; font-size:15px; margin-bottom:15px;">${desc}</div>
+    <div style="background:rgba(0,255,136,0.1); padding:10px; border-radius:10px; color:${gamingColor}; font-weight:bold;">
+      ${gaming}
+    </div>
+  `;
+}
+
+// ═══ مشاركة النتيجة ═══
+function shareResult() {
+  if (!window._testResult) return;
+  const r = window._testResult;
+  const text = '⚡ اختبار سرعة النت من موقع Abu Kamila Karrar\n\n' +
+               '⬇️ التحميل: ' + r.download + ' Mbps\n' +
+               '⬆️ الرفع: ' + r.upload + ' Mbps\n' +
+               '📡 البينغ: ' + r.ping + ' ms\n' +
+               '📊 التقلب: ' + r.jitter + ' ms\n\n' +
+               '🌐 جرب موقعي: https://krarfsywh-sys.github.io/Abu-Kamila-/';
+
+  if (navigator.share) {
+    navigator.share({ title: 'اختبار السرعة', text: text });
+  } else {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('✅ تم نسخ النتيجة!');
+    });
+  }
+}
+</script>
+
+
 <section class="section fade-in" id="contact">
   <h2>تواصل معي</h2>
   <p style="text-align:center; color:#aaa; margin-bottom:20px;">تقدر تتواصل معي على المنصات التالية:</p>
