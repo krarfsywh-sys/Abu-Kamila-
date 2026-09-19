@@ -1,0 +1,124 @@
+
+<!-- قسم تحميل التطبيقات -->
+<section class="section fade-in" id="downloads">
+  <h2>📥 تحميل التطبيقات</h2>
+  <p style="text-align:center; color:#aaa; margin-bottom:25px;">
+    حمّل تطبيقاتي — مجاناً 100%
+  </p>
+
+  <!-- عدد التطبيقات -->
+  <div style="text-align:center; margin-bottom:25px;">
+    <div style="display:inline-block; padding:10px 25px; background:rgba(0,255,136,0.1); border:1px solid #00ff88; border-radius:50px; color:#00ff88; font-size:14px;">
+      📦 <span id="appsCount">0</span> تطبيق متوفر
+    </div>
+  </div>
+
+  <!-- قائمة التطبيقات -->
+  <div id="appsList" style="display:grid; gap:15px;"></div>
+
+  <!-- معلومات -->
+  <div class="card" style="margin-top:25px; text-align:center; border-color:rgba(0,255,136,0.3);">
+    <p style="color:#aaa; font-size:13px;">
+      ✅ جميع التطبيقات <b style="color:#00ff88">مجانية</b> • 
+      🔒 <b style="color:#00ff88">آمنة</b> • 
+      📱 تعمل على <b style="color:#00ff88">أندرويد</b>
+    </p>
+  </div>
+</section>
+
+<script>
+// ═══ قائمة التطبيقات ═══
+// ⚠️ أضف تطبيقاتك هنا
+const APPS = [
+  {
+    name: 'Karrar Tools',
+    desc: 'أدوات متنوعة — بطارية، كاميرا، فلاش، اهتزاز',
+    icon: '🛠️',
+    version: '1.0.0',
+    size: '2 MB',
+    date: '2026-09-19',
+    file: 'apps/karrar-tools.apk',
+    category: 'أدوات'
+  },
+  {
+    name: 'Karrar AI Video',
+    desc: 'توليد فيديوهات بالذكاء الاصطناعي',
+    icon: '🎬',
+    version: '1.0.0',
+    size: '3 MB',
+    date: '2026-09-19',
+    file: 'apps/karrar-ai-video.apk',
+    category: 'ذكاء اصطناعي'
+  },
+  {
+    name: 'Karrar PES Helper',
+    desc: 'مساعد eFootball — حاسبة، مؤقت، نصائح',
+    icon: '🎮',
+    version: '1.0.0',
+    size: '1 MB',
+    date: '2026-09-19',
+    file: 'apps/karrar-pes.apk',
+    category: 'ألعاب'
+  }
+];
+
+// عرض التطبيقات
+function renderApps() {
+  const container = document.getElementById('appsList');
+  if (!container) return;
+
+  if (APPS.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="text-align:center; padding:40px;">
+        <div style="font-size:50px; margin-bottom:15px;">📭</div>
+        <p style="color:#888;">ما في تطبيقات متوفرة حالياً</p>
+      </div>
+    `;
+    document.getElementById('appsCount').textContent = '0';
+    return;
+  }
+
+  document.getElementById('appsCount').textContent = APPS.length;
+
+  container.innerHTML = APPS.map(app => `
+    <div class="card" style="padding:20px; border-color:#00ff88; transition:0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+      
+      <div style="display:flex; gap:15px; align-items:center; margin-bottom:15px;">
+        <div style="width:70px; height:70px; background:linear-gradient(135deg, #00ff88, #00cc66); border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:36px; flex-shrink:0; box-shadow:0 0 20px rgba(0,255,136,0.4);">
+          ${app.icon}
+        </div>
+        <div style="flex:1; min-width:0;">
+          <h3 style="color:#00ff88; font-size:18px; margin-bottom:5px;">${app.name}</h3>
+          <p style="color:#aaa; font-size:13px; line-height:1.5;">${app.desc}</p>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:15px;">
+        <span style="padding:5px 12px; background:rgba(0,255,136,0.1); border-radius:20px; color:#00ff88; font-size:11px;">📌 ${app.version}</span>
+        <span style="padding:5px 12px; background:rgba(0,255,136,0.1); border-radius:20px; color:#00ff88; font-size:11px;">💾 ${app.size}</span>
+        <span style="padding:5px 12px; background:rgba(0,255,136,0.1); border-radius:20px; color:#00ff88; font-size:11px;">🏷️ ${app.category}</span>
+        <span style="padding:5px 12px; background:rgba(0,255,136,0.1); border-radius:20px; color:#00ff88; font-size:11px;">📅 ${app.date}</span>
+      </div>
+
+      <button onclick="downloadApp('${app.file}', '${app.name}')" style="width:100%; padding:15px; background:linear-gradient(135deg, #00ff88, #00cc66); color:#000; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; box-shadow:0 0 20px rgba(0,255,136,0.4); transition:0.3s; font-family:inherit;">
+        📥 تحميل الآن
+      </button>
+
+    </div>
+  `).join('');
+}
+
+// تحميل التطبيق
+function downloadApp(file, name) {
+  const link = document.createElement('a');
+  link.href = file;
+  link.download = name.replace(/ /g, '_') + '.apk';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// تشغيل
+setTimeout(renderApps, 500);
+</script>
+
