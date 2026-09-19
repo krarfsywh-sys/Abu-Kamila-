@@ -868,249 +868,255 @@ function shareResult() {
 
 
 
+
+
+
+
+
+
+<!-- اختبار سرعة مباشر مستمر -->
 <section class="section fade-in" id="speed">
-  <h2>⚡ اختبار سرعة النت</h2>
-  <p style="text-align:center; color:#aaa; margin-bottom:25px;">اختبار حقيقي — الرقم يتحرك مباشرة</p>
+  <h2>⚡ سرعة النت مباشر</h2>
+  <p style="text-align:center; color:#aaa; margin-bottom:25px;">الرقم يتحرك مباشرة — حسب اتصالك الحقيقي</p>
 
-  <div class="card" style="padding:20px; border-color:#00ff88;">
+  <div class="card" style="padding:25px; border-color:#00ff88; box-shadow:0 0 50px rgba(0,255,136,0.2);">
 
-    <!-- الرقم الرئيسي -->
-    <div style="text-align:center; margin-bottom:25px;">
-      <div id="mainSpeed" style="font-size:80px; font-weight:bold; color:#00ff88; font-family:monospace; text-shadow:0 0 40px #00ff88; line-height:1;">0.00</div>
-      <div style="color:#fff; font-size:16px; margin-top:8px;">Mbps</div>
-      <div id="status" style="color:#00ff88; font-size:14px; margin-top:12px; min-height:20px;">جاهز</div>
+    <!-- الرقم الكبير -->
+    <div style="text-align:center; margin-bottom:20px;">
+      <div id="liveSpeed" style="font-size:100px; font-weight:bold; color:#00ff88; font-family:'Courier New', monospace; text-shadow:0 0 60px #00ff88; line-height:1; transition:color 0.2s;">0.00</div>
+      <div style="color:#fff; font-size:18px; margin-top:5px;">Mbps</div>
+      <div id="liveStatus" style="color:#888; font-size:14px; margin-top:12px;">اضغط "ابدأ" للقياس المستمر</div>
     </div>
 
-    <!-- شريط -->
-    <div style="height:15px; background:#111; border-radius:10px; overflow:hidden; margin-bottom:20px;">
-      <div id="bar" style="height:100%; width:0%; background:linear-gradient(90deg, #ff0044, #ffaa00, #00ff88); transition:width 0.2s;"></div>
+    <!-- النبض -->
+    <div style="text-align:center; margin-bottom:20px;">
+      <div id="pulseDot" style="display:inline-block; width:14px; height:14px; background:#333; border-radius:50%; transition:0.3s;"></div>
     </div>
 
-    <!-- الصغيرة -->
-    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:20px;">
-      <div style="background:rgba(255,170,0,0.08); border:1px solid #ffaa00; border-radius:10px; padding:12px; text-align:center;">
-        <div style="color:#888; font-size:10px;">📡 بينغ</div>
-        <div id="pingBox" style="color:#ffaa00; font-size:20px; font-weight:bold; font-family:monospace;">--</div>
-        <div style="color:#666; font-size:9px;">ms</div>
+    <!-- شريط مباشر -->
+    <div style="height:20px; background:#0a0a0a; border-radius:10px; overflow:hidden; margin-bottom:20px; border:1px solid rgba(0,255,136,0.3);">
+      <div id="liveBar" style="height:100%; width:0%; background:linear-gradient(90deg, #ff0044, #ffaa00, #00ff88); border-radius:10px; transition:width 0.15s linear;"></div>
+    </div>
+
+    <!-- رسم بياني -->
+    <canvas id="liveGraph" style="width:100%; height:100px; background:#000; border-radius:10px; display:block; margin-bottom:20px; border:1px solid rgba(0,255,136,0.2);"></canvas>
+
+    <!-- الإحصائيات -->
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px;">
+      <div style="background:rgba(0,255,136,0.08); border:1px solid #00ff88; border-radius:10px; padding:12px; text-align:center;">
+        <div style="color:#888; font-size:10px;">🔺 الأعلى</div>
+        <div id="peakBox" style="color:#00ff88; font-size:18px; font-weight:bold; font-family:monospace;">0.00</div>
       </div>
       <div style="background:rgba(0,204,255,0.08); border:1px solid #00ccff; border-radius:10px; padding:12px; text-align:center;">
-        <div style="color:#888; font-size:10px;">📊 تقلب</div>
-        <div id="jitterBox" style="color:#00ccff; font-size:20px; font-weight:bold; font-family:monospace;">--</div>
-        <div style="color:#666; font-size:9px;">ms</div>
+        <div style="color:#888; font-size:10px;">📊 المعدل</div>
+        <div id="avgBox" style="color:#00ccff; font-size:18px; font-weight:bold; font-family:monospace;">0.00</div>
       </div>
-      <div style="background:rgba(255,0,68,0.08); border:1px solid #ff0044; border-radius:10px; padding:12px; text-align:center;">
-        <div style="color:#888; font-size:10px;">⬆️ رفع</div>
-        <div id="upBox" style="color:#ff0044; font-size:20px; font-weight:bold; font-family:monospace;">--</div>
-        <div style="color:#666; font-size:9px;">Mbps</div>
+      <div style="background:rgba(255,170,0,0.08); border:1px solid #ffaa00; border-radius:10px; padding:12px; text-align:center;">
+        <div style="color:#888; font-size:10px;">⏱️ الوقت</div>
+        <div id="timeBox" style="color:#ffaa00; font-size:18px; font-weight:bold; font-family:monospace;">0s</div>
       </div>
     </div>
 
-    <!-- الزر -->
-    <button onclick="runTest()" id="btn" style="width:100%; padding:20px; background:linear-gradient(135deg,#00ff88,#00cc66); color:#000; border:none; border-radius:12px; font-size:18px; font-weight:bold; cursor:pointer; font-family:inherit;">🚀 ابدأ الاختبار</button>
+    <!-- الأزرار -->
+    <button onclick="startLive()" id="startBtn" style="width:100%; padding:20px; background:linear-gradient(135deg,#00ff88,#00cc66); color:#000; border:none; border-radius:12px; font-size:18px; font-weight:bold; cursor:pointer; font-family:inherit;">▶️ ابدأ القياس</button>
+    <button onclick="stopLive()" id="stopBtn" style="display:none; width:100%; margin-top:10px; padding:20px; background:linear-gradient(135deg,#ff0044,#cc0033); color:#fff; border:none; border-radius:12px; font-size:18px; font-weight:bold; cursor:pointer; font-family:inherit;">⏹️ إيقاف</button>
 
   </div>
-
-  <!-- التقييم -->
-  <div id="ratingBox" style="display:none; margin-top:20px; padding:20px; background:rgba(0,255,136,0.08); border:1px solid #00ff88; border-radius:15px; text-align:center;">
-    <div id="ratingText" style="color:#00ff88; font-size:16px; font-weight:bold;"></div>
-  </div>
-
 </section>
 
 <script>
-// ═══ اختبار السرعة — نسخة نظيفة ═══
-var isRunning = false;
+// ═══ اختبار سرعة مباشر مستمر ═══
+var isLive = false;
+var allSamples = [];
+var peakSpeed = 0;
+var startTime = null;
+var graphPoints = [];
 
-function setSpeed(v, color) {
-  var el = document.getElementById('mainSpeed');
+var canvas = document.getElementById('liveGraph');
+var ctx = canvas.getContext('2d');
+
+function sizeCanvas() {
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+}
+setTimeout(sizeCanvas, 300);
+window.addEventListener('resize', sizeCanvas);
+
+function drawGraph() {
+  if (!ctx) return;
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // شبكة
+  ctx.strokeStyle = 'rgba(0,255,136,0.08)';
+  ctx.lineWidth = 1;
+  for (var i = 1; i <= 4; i++) {
+    var y = (canvas.height / 4) * i;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvas.width, y);
+    ctx.stroke();
+  }
+
+  if (graphPoints.length < 2) return;
+
+  var max = Math.max.apply(null, graphPoints);
+  if (max < 5) max = 5;
+
+  var step = canvas.width / (graphPoints.length - 1);
+
+  // خط
+  ctx.beginPath();
+  ctx.strokeStyle = '#00ff88';
+  ctx.lineWidth = 2;
+  ctx.shadowColor = '#00ff88';
+  ctx.shadowBlur = 12;
+
+  for (var j = 0; j < graphPoints.length; j++) {
+    var x = j * step;
+    var y = canvas.height - (graphPoints[j] / max) * canvas.height * 0.9;
+    if (j === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // تعبئة
+  ctx.lineTo(canvas.width, canvas.height);
+  ctx.lineTo(0, canvas.height);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(0,255,136,0.15)';
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function setLive(v, color) {
+  var el = document.getElementById('liveSpeed');
   el.textContent = v.toFixed(2);
   el.style.color = color;
-  el.style.textShadow = '0 0 40px ' + color;
-  document.getElementById('bar').style.width = Math.min(100, v) + '%';
+  el.style.textShadow = '0 0 60px ' + color;
+  document.getElementById('liveBar').style.width = Math.min(100, v) + '%';
+  document.getElementById('liveBar').style.background = 'linear-gradient(90deg, ' + color + ', ' + color + ')';
 }
 
-function setStatus(t, c) {
-  var el = document.getElementById('status');
-  el.textContent = t;
-  if (c) el.style.color = c;
+function colorFor(v) {
+  if (v > 50) return '#00ff88';
+  if (v > 20) return '#00ccff';
+  if (v > 10) return '#ffaa00';
+  if (v > 5) return '#ff6600';
+  return '#ff0044';
 }
 
-function wait(ms) {
-  return new Promise(function(r) { setTimeout(r, ms); });
-}
-
-async function runTest() {
-  if (isRunning) return;
-  isRunning = true;
-
-  var btn = document.getElementById('btn');
-  btn.textContent = '⏳ جاري الاختبار...';
-  btn.disabled = true;
-  document.getElementById('ratingBox').style.display = 'none';
-
-  // ═══════════════════════════
-  // 1. البينغ
-  // ═══════════════════════════
-  setStatus('📡 قياس البينغ...', '#ffaa00');
-  setSpeed(0, '#ffaa00');
-
-  var pings = [];
-  for (var i = 0; i < 8; i++) {
-    var t0 = performance.now();
+async function liveLoop() {
+  while (isLive) {
     try {
-      await fetch('https://speed.cloudflare.com/__down?bytes=1000&t=' + Date.now(), { cache: 'no-store' });
-      var dt = performance.now() - t0;
-      pings.push(dt);
-      var avg = pings.reduce(function(a,b){return a+b;}, 0) / pings.length;
-      document.getElementById('pingBox').textContent = Math.round(avg);
-    } catch(e) { console.log(e); }
-    await wait(100);
-  }
+      var t0 = performance.now();
+      var totalBytes = 0;
+      var lastTime = t0;
+      var lastBytes = 0;
+      var recent = [];
 
-  if (pings.length === 0) {
-    setStatus('❌ فشل الاتصال — تحقق من النت', '#ff0044');
-    btn.textContent = '🚀 ابدأ الاختبار';
-    btn.disabled = false;
-    isRunning = false;
-    return;
-  }
+      var resp = await fetch('https://speed.cloudflare.com/__down?bytes=20000000&t=' + Date.now(), {
+        cache: 'no-store',
+        mode: 'cors'
+      });
 
-  var avgPing = Math.round(pings.reduce(function(a,b){return a+b;}, 0) / pings.length);
-  var minPing = Math.min.apply(null, pings);
-  var maxPing = Math.max.apply(null, pings);
-  var jitter = Math.round(maxPing - minPing);
+      var reader = resp.body.getReader();
 
-  document.getElementById('pingBox').textContent = avgPing;
-  document.getElementById('jitterBox').textContent = jitter;
+      while (isLive) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
 
-  setStatus('✅ البينغ: ' + avgPing + 'ms', '#00ff88');
-  await wait(400);
+        totalBytes += chunk.value.length;
+        var now = performance.now();
 
-  // ═══════════════════════════
-  // 2. التحميل — مباشر
-  // ═══════════════════════════
-  setStatus('⬇️ قياس التحميل...', '#00ff88');
-  setSpeed(0, '#00ff88');
+        if (now - lastTime >= 200) {
+          var dt = (now - lastTime) / 1000;
+          var dB = totalBytes - lastBytes;
+          var instant = (dB * 8) / (dt * 1000000);
 
-  var dlSpeed = 0;
+          recent.push(instant);
+          if (recent.length > 5) recent.shift();
 
-  try {
-    var t1 = performance.now();
-    var totalBytes = 0;
-    var lastTime = t1;
-    var lastBytes = 0;
-    var samples = [];
+          var smooth = recent.reduce(function(a,b){return a+b;}, 0) / recent.length;
 
-    var resp = await fetch('https://speed.cloudflare.com/__down?bytes=25000000&t=' + Date.now(), { cache: 'no-store' });
-    var reader = resp.body.getReader();
+          // إحصائيات
+          allSamples.push(smooth);
+          if (smooth > peakSpeed) peakSpeed = smooth;
 
-    while (true) {
-      var chunk = await reader.read();
-      if (chunk.done) break;
-      totalBytes += chunk.value.length;
+          var avg = allSamples.reduce(function(a,b){return a+b;}, 0) / allSamples.length;
+          var elapsed = Math.floor((Date.now() - startTime) / 1000);
 
-      var now = performance.now();
-      if (now - lastTime >= 150) {
-        var dtSec = (now - lastTime) / 1000;
-        var dBytes = totalBytes - lastBytes;
-        var instant = (dBytes * 8) / (dtSec * 1000000);
+          // تحديث
+          setLive(smooth, colorFor(smooth));
+          document.getElementById('peakBox').textContent = peakSpeed.toFixed(2);
+          document.getElementById('avgBox').textContent = avg.toFixed(2);
+          document.getElementById('timeBox').textContent = elapsed + 's';
 
-        samples.push(instant);
+          // رسم
+          graphPoints.push(smooth);
+          if (graphPoints.length > 100) graphPoints.shift();
+          drawGraph();
 
-        // متوسط آخر 3 قياسات
-        var recent = samples.slice(-3);
-        var smooth = recent.reduce(function(a,b){return a+b;}, 0) / recent.length;
-
-        // اللون
-        var color = '#ff0044';
-        if (smooth > 50) color = '#00ff88';
-        else if (smooth > 20) color = '#00ccff';
-        else if (smooth > 10) color = '#ffaa00';
-        else if (smooth > 5) color = '#ff6600';
-
-        setSpeed(smooth, color);
-        dlSpeed = smooth;
-
-        lastTime = now;
-        lastBytes = totalBytes;
+          lastTime = now;
+          lastBytes = totalBytes;
+        }
       }
+    } catch(e) {
+      console.log('Live error:', e);
+      await new Promise(function(r){setTimeout(r, 500);});
     }
-
-    var totalTime = (performance.now() - t1) / 1000;
-    var finalDl = (totalBytes * 8) / (totalTime * 1000000);
-    if (finalDl > 0) dlSpeed = finalDl;
-    setSpeed(dlSpeed, '#00ff88');
-
-  } catch(e) {
-    console.log('DL error:', e);
-    setStatus('❌ فشل قياس التحميل', '#ff0044');
+    // استمرار فوري بدون توقف
+    await new Promise(function(r){setTimeout(r, 100);});
   }
-
-  setStatus('✅ التحميل: ' + dlSpeed.toFixed(2) + ' Mbps', '#00ff88');
-  await wait(400);
-
-  // ═══════════════════════════
-  // 3. الرفع — مباشر
-  // ═══════════════════════════
-  setStatus('⬆️ قياس الرفع...', '#ff0044');
-  setSpeed(0, '#ff0044');
-
-  var upSpeed = 0;
-
-  try {
-    var dataSize = 2000000; // 2MB
-    var data = new Uint8Array(dataSize);
-    for (var j = 0; j < dataSize; j += 500) data[j] = Math.floor(Math.random() * 256);
-
-    var t2 = performance.now();
-    await fetch('https://speed.cloudflare.com/__up', {
-      method: 'POST',
-      body: data,
-      cache: 'no-store'
-    });
-    var upTime = (performance.now() - t2) / 1000;
-    upSpeed = (dataSize * 8) / (upTime * 1000000);
-
-    // عرض تدريجي
-    var shown = 0;
-    for (var k = 0; k < 15; k++) {
-      shown += upSpeed / 15;
-      document.getElementById('upBox').textContent = shown.toFixed(2);
-      setSpeed(shown, '#ff0044');
-      await wait(80);
-    }
-    setSpeed(upSpeed, '#ff0044');
-    document.getElementById('upBox').textContent = upSpeed.toFixed(2);
-
-  } catch(e) {
-    console.log('UP error:', e);
-    upSpeed = dlSpeed * 0.35;
-    document.getElementById('upBox').textContent = upSpeed.toFixed(2);
-  }
-
-  setStatus('✅ اكتمل!', '#00ff88');
-  document.getElementById('upBox').textContent = upSpeed.toFixed(2);
-
-  // ═══════════════════════════
-  // 4. التقييم
-  // ═══════════════════════════
-  var rating = '';
-
-  if (avgPing <= 30 && dlSpeed >= 25) rating = '🔥 ممتاز للعب والفيديو 4K';
-  else if (avgPing <= 60 && dlSpeed >= 15) rating = '⭐ ممتاز — يشتغل كل شي';
-  else if (avgPing <= 100 && dlSpeed >= 10) rating = '✅ جيد — للألعاب والفيديو HD';
-  else if (avgPing <= 150 && dlSpeed >= 5) rating = '⚠️ متوسط — يشتغل بس';
-  else if (dlSpeed >= 2) rating = '🐢 ضعيف — يحتاج تحسين';
-  else rating = '❌ سيء جداً';
-
-  document.getElementById('ratingText').textContent = rating;
-  document.getElementById('ratingBox').style.display = 'block';
-
-  btn.textContent = '🔄 اختبار جديد';
-  btn.disabled = false;
-  isRunning = false;
 }
+
+function startLive() {
+  if (isLive) return;
+  isLive = true;
+  allSamples = [];
+  peakSpeed = 0;
+  graphPoints = [];
+  startTime = Date.now();
+
+  document.getElementById('startBtn').style.display = 'none';
+  document.getElementById('stopBtn').style.display = 'block';
+  document.getElementById('liveStatus').textContent = '🟢 جاري القياس المستمر...';
+  document.getElementById('liveStatus').style.color = '#00ff88';
+
+  var dot = document.getElementById('pulseDot');
+  dot.style.background = '#00ff88';
+  dot.style.boxShadow = '0 0 20px #00ff88';
+  dot.style.animation = 'pulse 1s infinite';
+
+  liveLoop();
+}
+
+function stopLive() {
+  isLive = false;
+  document.getElementById('startBtn').style.display = 'block';
+  document.getElementById('stopBtn').style.display = 'none';
+  document.getElementById('liveStatus').textContent = '⏹️ متوقف';
+  document.getElementById('liveStatus').style.color = '#888';
+
+  var dot = document.getElementById('pulseDot');
+  dot.style.background = '#333';
+  dot.style.boxShadow = 'none';
+  dot.style.animation = 'none';
+}
+
+setTimeout(function() {
+  sizeCanvas();
+  drawGraph();
+}, 500);
 </script>
+
+<style>
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+}
+</style>
 
 
 <section class="section fade-in" id="contact">
