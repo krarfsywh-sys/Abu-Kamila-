@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abu Kamila Karrar</title>
@@ -377,6 +385,19 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     const btn = document.getElementById('installBtn');
     if (btn) btn.style.display = 'none';
   }, 100);
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(reg => {
+      // تحديث تلقائي كل 60 ثانية
+      setInterval(() => {
+        reg.update();
+      }, 60000);
+    })
+    .catch(err => console.log('SW:', err));
 }
 </script>
 </body>
