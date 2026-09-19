@@ -1,0 +1,173 @@
+
+<!-- شات الذكاء الاصطناعي -->
+<section class="section fade-in" id="ai">
+  <h2>🤖 ذكاء اصطناعي</h2>
+  <p style="text-align:center; color:#aaa; margin-bottom:25px;">
+    اسأل أي شي — الذكاء الاصطناعي راح يجاوبك
+  </p>
+
+  <!-- الشات -->
+  <div class="card" style="padding:0; overflow:hidden; border-color:#00ff88;">
+    
+    <!-- الرأس -->
+    <div style="padding:15px 20px; background:linear-gradient(135deg, #00ff88, #00cc66); display:flex; align-items:center; gap:10px;">
+      <div style="width:40px; height:40px; background:#000; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px;">🤖</div>
+      <div>
+        <div style="color:#000; font-weight:bold; font-size:16px;">Karrar AI</div>
+        <div style="color:#000; font-size:12px; opacity:0.7;">🟢 متصل</div>
+      </div>
+    </div>
+
+    <!-- الرسائل -->
+    <div id="chatMessages" style="height:400px; overflow-y:auto; padding:20px; background:#0a0a0a; display:flex; flex-direction:column; gap:12px;">
+      
+      <!-- رسالة ترحيب -->
+      <div style="display:flex; gap:10px; align-items:flex-start;">
+        <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">🤖</div>
+        <div style="background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.6;">
+          أهلاً! أنا Karrar AI 🤖<br>اسألني أي شي — بالعربي أو الإنجليزي.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- الإدخال -->
+    <div style="padding:15px; background:#111; border-top:1px solid #00ff88; display:flex; gap:10px;">
+      <input 
+        type="text" 
+        id="chatInput" 
+        placeholder="اكتب سؤالك هنا..." 
+        onkeypress="if(event.key==='Enter') sendMessage()"
+        style="flex:1; padding:14px 18px; background:#222; color:#fff; border:1px solid #00ff88; border-radius:25px; font-size:15px; outline:none;"
+      >
+      <button 
+        onclick="sendMessage()" 
+        id="sendBtn"
+        style="padding:14px 25px; background:#00ff88; color:#000; border:none; border-radius:25px; font-size:18px; cursor:pointer; font-weight:bold; transition:0.3s;"
+      >📤</button>
+    </div>
+
+  </div>
+
+  <!-- أزرار سريعة -->
+  <div style="text-align:center; margin-top:20px;">
+    <p style="color:#aaa; font-size:13px; margin-bottom:10px;">💡 جرب أسئلة سريعة:</p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+      <button onclick="quickAsk('اكتب لي قصة قصيرة')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">📖 قصة قصيرة</button>
+      <button onclick="quickAsk('اعطني نصيحة اليوم')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">💡 نصيحة</button>
+      <button onclick="quickAsk('اكتب لي بيت شعر')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">🎭 بيت شعر</button>
+      <button onclick="quickAsk('اشرح لي الذكاء الاصطناعي ببساطة')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">🤖 AI</button>
+    </div>
+  </div>
+
+  <p style="text-align:center; color:#666; font-size:11px; margin-top:15px;">
+    ⚠️ الإجابات من AI — قد تحتوي أخطاء
+  </p>
+
+</section>
+
+<script>
+// ═══ Karrar AI Chat ═══
+const AI_API = 'https://text.pollinations.ai/';
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const message = input.value.trim();
+  if (!message) return;
+
+  // عرض رسالة المستخدم
+  addMessage(message, 'user');
+  input.value = '';
+
+  // مؤشر الكتابة
+  const loadingId = addLoading();
+
+  try {
+    // إرسال للسيرفر
+    const response = await fetch(AI_API + encodeURIComponent(message) + '?model=openai');
+
+    const reply = await response.text();
+
+    // إزالة مؤشر التحميل
+    removeLoading(loadingId);
+
+    // عرض الرد
+    addMessage(reply.trim(), 'ai');
+
+  } catch (err) {
+    removeLoading(loadingId);
+    addMessage('❌ صار خطأ — جرب مرة ثانية', 'ai');
+  }
+}
+
+function addMessage(text, type) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.style.display = 'flex';
+  div.style.gap = '10px';
+  div.style.alignItems = 'flex-start';
+
+  if (type === 'user') {
+    div.style.flexDirection = 'row-reverse';
+    div.innerHTML = `
+      <div style="width:35px; height:35px; background:#00ccff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">👤</div>
+      <div style="background:#003d2b; padding:12px 16px; border-radius:15px; border-top-left-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.6; word-wrap:break-word;">${escapeHtml(text)}</div>
+    `;
+  } else {
+    div.innerHTML = `
+      <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">🤖</div>
+      <div style="background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.6; word-wrap:break-word;">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
+    `;
+  }
+
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function addLoading() {
+  const container = document.getElementById('chatMessages');
+  const id = 'loading_' + Date.now();
+  const div = document.createElement('div');
+  div.id = id;
+  div.style.display = 'flex';
+  div.style.gap = '10px';
+  div.style.alignItems = 'flex-start';
+  div.innerHTML = `
+    <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">🤖</div>
+    <div style="background:#1a1a1a; padding:12px 16px; border-radius:15px; color:#00ff88; font-size:14px;">
+      <span style="animation:dots 1.5s infinite;">●●●</span>
+    </div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+function removeLoading(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function quickAsk(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+</script>
+
+<style>
+@keyframes dots {
+  0%, 20% { opacity: 0.3; }
+  50% { opacity: 1; }
+  80%, 100% { opacity: 0.3; }
+}
+</style>
+
