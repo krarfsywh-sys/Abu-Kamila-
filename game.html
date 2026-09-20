@@ -1,0 +1,512 @@
+
+<!-- لعبة NEON SURVIVOR -->
+<section class="section fade-in" id="game">
+  <h2>🎮 NEON SURVIVOR</h2>
+  <p style="text-align:center; color:#aaa; margin-bottom:20px;">انجُ من الأعداء — كل موجة أقوى</p>
+
+  <div class="card" style="padding:0; overflow:hidden; border-color:#00ff88; max-width:500px; margin:0 auto;">
+
+    <!-- HUD -->
+    <div style="padding:12px 15px; background:#0a0a0a; display:flex; justify-content:space-between; border-bottom:1px solid rgba(0,255,136,0.3); font-size:13px;">
+      <div style="color:#00ff88;">❤️ <span id="gHp">100</span></div>
+      <div style="color:#ffaa00;">🌊 <span id="gWave">1</span></div>
+      <div style="color:#00ccff;">⭐ <span id="gScore">0</span></div>
+      <div style="color:#ff0044;">🏆 <span id="gBest">0</span></div>
+    </div>
+
+    <!-- الشاشة -->
+    <div style="position:relative; background:#000; aspect-ratio:3/4; touch-action:none;">
+      <canvas id="gameCanvas" style="width:100%; height:100%; display:block;"></canvas>
+
+      <!-- شاشة البداية -->
+      <div id="gStart" style="position:absolute; inset:0; background:rgba(0,0,0,0.9); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
+        <div style="font-size:70px; margin-bottom:15px; animation:pulse 2s infinite;">🎮</div>
+        <h3 style="color:#00ff88; font-size:26px; margin-bottom:10px; text-shadow:0 0 20px #00ff88;">NEON SURVIVOR</div>
+        <p style="color:#aaa; font-size:14px; margin-bottom:25px;">انجُ من الأعداء</p>
+        <button onclick="startGame()" style="padding:15px 45px; background:linear-gradient(135deg,#00ff88,#00cc66); color:#000; border:none; border-radius:50px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 0 25px rgba(0,255,136,0.5); font-family:inherit;">▶️ ابدأ</button>
+        <p style="color:#666; font-size:11px; margin-top:20px;">📱 المس الشاشة للحركة</p>
+      </div>
+
+      <!-- شاشة الخسارة -->
+      <div id="gOver" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.95); flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
+        <div style="font-size:60px; margin-bottom:15px;">💀</div>
+        <h3 style="color:#ff0044; font-size:24px; margin-bottom:15px;">انتهت اللعبة</h3>
+        <div style="color:#00ff88; font-size:40px; font-weight:bold; margin-bottom:10px;" id="gFinalScore">0</div>
+        <p style="color:#aaa; font-size:14px; margin-bottom:20px;">الموجة: <span id="gFinalWave">1</span> | الأعلى: <span id="gFinalBest">0</span></p>
+        <button onclick="startGame()" style="padding:15px 45px; background:linear-gradient(135deg,#00ff88,#00cc66); color:#000; border:none; border-radius:50px; font-size:16px; font-weight:bold; cursor:pointer; font-family:inherit;">🔄 حاول مرة ثانية</button>
+      </div>
+    </div>
+
+    <!-- أزرار -->
+    <div style="padding:12px; background:#0a0a0a; display:flex; gap:8px; border-top:1px solid rgba(0,255,136,0.3);">
+      <button onclick="useBomb()" id="bombBtn" style="flex:1; padding:12px; background:linear-gradient(135deg,#ff0044,#cc0033); color:#fff; border:none; border-radius:10px; font-weight:bold; cursor:pointer; font-family:inherit; font-size:13px;">💣 قنبلة (<span id="bombCount">3</span>)</button>
+      <button onclick="useShield()" id="shieldBtn" style="flex:1; padding:12px; background:linear-gradient(135deg,#00ccff,#0099cc); color:#fff; border:none; border-radius:10px; font-weight:bold; cursor:pointer; font-family:inherit; font-size:13px;">🛡️ درع (<span id="shieldCount">3</span>)</button>
+    </div>
+
+  </div>
+</section>
+
+<style>
+@keyframes pulse {
+  0%,100% { transform:scale(1); }
+  50% { transform:scale(1.1); }
+}
+</style>
+
+<script>
+(function() {
+  var canvas = document.getElementById('gameCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+
+  var running = false;
+  var lastTime = 0;
+  var gameTime = 0;
+
+  var player = { x: 0, y: 0, r: 12, hp: 100, maxHp: 100 };
+  var touchTarget = null;
+  var bullets = [];
+  var enemies = [];
+  var particles = [];
+  var powerups = [];
+  var score = 0;
+  var wave = 1;
+  var lastWaveTime = 0;
+  var waveInterval = 30;
+  var spawnRate = 1.2;
+  var lastSpawn = 0;
+  var best = parseInt(localStorage.getItem('neon_best') || '0');
+  var bombs = 3;
+  var shields = 3;
+  var shieldActive = 0;
+  var shootCooldown = 0;
+
+  document.getElementById('gBest').textContent = best;
+
+  function resize() {
+    var rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function startGame() {
+    resize();
+    document.getElementById('gStart').style.display = 'none';
+    document.getElementById('gOver').style.display = 'none';
+
+    player.x = canvas.width / 2;
+    player.y = canvas.height / 2;
+    player.hp = 100;
+    touchTarget = null;
+    bullets = [];
+    enemies = [];
+    particles = [];
+    powerups = [];
+    score = 0;
+    wave = 1;
+    gameTime = 0;
+    lastWaveTime = 0;
+    lastSpawn = 0;
+    spawnRate = 1.2;
+    bombs = 3;
+    shields = 3;
+    shieldActive = 0;
+    shootCooldown = 0;
+    updateHUD();
+
+    running = true;
+    lastTime = performance.now();
+    requestAnimationFrame(loop);
+  }
+
+  function loop(now) {
+    if (!running) return;
+    var dt = Math.min((now - lastTime) / 1000, 0.05);
+    lastTime = now;
+    gameTime += dt;
+    lastWaveTime += dt;
+
+    update(dt);
+    draw();
+
+    requestAnimationFrame(loop);
+  }
+
+  function update(dt) {
+    // حركة اللاعب — ناعمة نحو الهدف
+    if (touchTarget) {
+      var dx = touchTarget.x - player.x;
+      var dy = touchTarget.y - player.y;
+      var dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist > 3) {
+        var speed = 400;
+        player.x += (dx/dist) * speed * dt;
+        player.y += (dy/dist) * speed * dt;
+      }
+    }
+    // حدود
+    player.x = Math.max(player.r, Math.min(canvas.width - player.r, player.x));
+    player.y = Math.max(player.r, Math.min(canvas.height - player.r, player.y));
+
+    // إطلاق تلقائي
+    shootCooldown -= dt;
+    if (shootCooldown <= 0 && enemies.length > 0) {
+      // ابحث عن أقرب عدو
+      var nearest = null;
+      var minD = Infinity;
+      for (var i = 0; i < enemies.length; i++) {
+        var e = enemies[i];
+        var d = Math.hypot(e.x - player.x, e.y - player.y);
+        if (d < minD) { minD = d; nearest = e; }
+      }
+      if (nearest && minD < 500) {
+        var ang = Math.atan2(nearest.y - player.y, nearest.x - player.x);
+        bullets.push({
+          x: player.x, y: player.y,
+          vx: Math.cos(ang) * 700,
+          vy: Math.sin(ang) * 700,
+          r: 4,
+          life: 1.5
+        });
+        shootCooldown = 0.15;
+        // اهتزاز خفيف
+        addParticles(player.x, player.y, 2, '#00ff88', 100);
+      } else {
+        shootCooldown = 0.2;
+      }
+    }
+
+    // الرصاصات
+    for (var i = bullets.length - 1; i >= 0; i--) {
+      var b = bullets[i];
+      b.x += b.vx * dt;
+      b.y += b.vy * dt;
+      b.life -= dt;
+      if (b.life <= 0 || b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
+        bullets.splice(i, 1);
+      }
+    }
+
+    // توليد الأعداء
+    lastSpawn += dt;
+    if (lastSpawn > spawnRate) {
+      spawnEnemy();
+      lastSpawn = 0;
+      // صعوبة تزيد
+      spawnRate = Math.max(0.25, 1.2 - wave * 0.1);
+    }
+
+    // الأعداء
+    for (var i = enemies.length - 1; i >= 0; i--) {
+      var e = enemies[i];
+      var dx = player.x - e.x;
+      var dy = player.y - e.y;
+      var d = Math.hypot(dx, dy) || 1;
+      e.x += (dx/d) * e.speed * dt;
+      e.y += (dy/d) * e.speed * dt;
+
+      // اصطدام باللاعب
+      if (d < player.r + e.r) {
+        if (shieldActive > 0) {
+          // الدرع يقتله
+          addParticles(e.x, e.y, 15, '#00ccff', 250);
+          enemies.splice(i, 1);
+          score += 10;
+        } else {
+          player.hp -= e.damage;
+          addParticles(e.x, e.y, 10, '#ff0044', 200);
+          enemies.splice(i, 1);
+          if (player.hp <= 0) {
+            gameOver();
+            return;
+          }
+        }
+        updateHUD();
+      }
+    }
+
+    // الرصاص يصطدم بالأعداء
+    for (var i = bullets.length - 1; i >= 0; i--) {
+      var b = bullets[i];
+      for (var j = enemies.length - 1; j >= 0; j--) {
+        var e = enemies[j];
+        if (Math.hypot(b.x - e.x, b.y - e.y) < b.r + e.r) {
+          e.hp -= 25;
+          addParticles(b.x, b.y, 3, '#00ff88', 150);
+          bullets.splice(i, 1);
+          if (e.hp <= 0) {
+            addParticles(e.x, e.y, 20, '#ff0044', 250);
+            score += e.score;
+            // فرصة تسقط power-up
+            if (Math.random() < 0.15) {
+              powerups.push({
+                x: e.x, y: e.y, r: 10,
+                type: Math.random() < 0.5 ? 'health' : 'bomb',
+                life: 8
+              });
+            }
+            enemies.splice(j, 1);
+          }
+          break;
+        }
+      }
+    }
+
+    // جزيئات
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.vx *= 0.95;
+      p.vy *= 0.95;
+      p.life -= dt;
+      if (p.life <= 0) particles.splice(i, 1);
+    }
+
+    // Power-ups
+    for (var i = powerups.length - 1; i >= 0; i--) {
+      var pu = powerups[i];
+      pu.life -= dt;
+      if (Math.hypot(player.x - pu.x, player.y - pu.y) < player.r + pu.r + 5) {
+        if (pu.type === 'health') {
+          player.hp = Math.min(player.maxHp, player.hp + 25);
+        } else if (pu.type === 'bomb') {
+          bombs++;
+        }
+        addParticles(pu.x, pu.y, 10, '#ffaa00', 200);
+        powerups.splice(i, 1);
+        updateHUD();
+      } else if (pu.life <= 0) {
+        powerups.splice(i, 1);
+      }
+    }
+
+    // موجة جديدة
+    if (lastWaveTime > waveInterval) {
+      lastWaveTime = 0;
+      wave++;
+      updateHUD();
+    }
+
+    // درع ينتهي
+    if (shieldActive > 0) {
+      shieldActive -= dt;
+    }
+  }
+
+  function spawnEnemy() {
+    var side = Math.floor(Math.random() * 4);
+    var x, y;
+    if (side === 0) { x = rand(0, canvas.width); y = -20; }
+    else if (side === 1) { x = canvas.width + 20; y = rand(0, canvas.height); }
+    else if (side === 2) { x = rand(0, canvas.width); y = canvas.height + 20; }
+    else { x = -20; y = rand(0, canvas.height); }
+
+    var hp = 25 + wave * 10;
+    enemies.push({
+      x: x, y: y,
+      r: 12 + Math.random() * 5,
+      hp: hp, maxHp: hp,
+      speed: 60 + wave * 8 + Math.random() * 30,
+      damage: 10 + wave * 2,
+      score: 10 + wave * 5
+    });
+  }
+
+  function addParticles(x, y, count, color, speed) {
+    for (var i = 0; i < count; i++) {
+      var ang = Math.random() * Math.PI * 2;
+      var spd = rand(speed * 0.3, speed);
+      particles.push({
+        x: x, y: y,
+        vx: Math.cos(ang) * spd,
+        vy: Math.sin(ang) * spd,
+        r: rand(1, 3),
+        color: color,
+        life: rand(0.3, 0.8)
+      });
+    }
+  }
+
+  function draw() {
+    // خلفية
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // شبكة
+    ctx.strokeStyle = 'rgba(0,255,136,0.05)';
+    ctx.lineWidth = 1;
+    for (var i = 0; i < canvas.width; i += 40) {
+      ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+    }
+    for (var i = 0; i < canvas.height; i += 40) {
+      ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+    }
+
+    // Power-ups
+    for (var i = 0; i < powerups.length; i++) {
+      var pu = powerups[i];
+      var c = pu.type === 'health' ? '#ff0044' : '#ffaa00';
+      var emoji = pu.type === 'health' ? '❤' : '💣';
+      ctx.shadowColor = c; ctx.shadowBlur = 20;
+      ctx.fillStyle = c;
+      ctx.beginPath();
+      ctx.arc(pu.x, pu.y, pu.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#000';
+      ctx.font = 'bold 14px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(emoji, pu.x, pu.y);
+    }
+
+    // الأعداء
+    for (var i = 0; i < enemies.length; i++) {
+      var e = enemies[i];
+      ctx.shadowColor = '#ff0044'; ctx.shadowBlur = 15;
+      ctx.fillStyle = '#ff0044';
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      // شريط صحة
+      var hpPct = e.hp / e.maxHp;
+      ctx.fillStyle = '#000';
+      ctx.fillRect(e.x - e.r, e.y - e.r - 8, e.r * 2, 3);
+      ctx.fillStyle = '#ff0044';
+      ctx.fillRect(e.x - e.r, e.y - e.r - 8, e.r * 2 * hpPct, 3);
+    }
+
+    // الرصاصات
+    for (var i = 0; i < bullets.length; i++) {
+      var b = bullets[i];
+      ctx.shadowColor = '#00ff88'; ctx.shadowBlur = 15;
+      ctx.fillStyle = '#00ff88';
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+
+    // جزيئات
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      ctx.globalAlpha = p.life;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // اللاعب
+    ctx.shadowColor = '#00ff88'; ctx.shadowBlur = 25;
+    ctx.fillStyle = '#00ff88';
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, player.r, 0, Math.PI * 2);
+    ctx.fill();
+
+    // حلقة الدرع
+    if (shieldActive > 0) {
+      ctx.strokeStyle = '#00ccff';
+      ctx.lineWidth = 3;
+      ctx.shadowColor = '#00ccff'; ctx.shadowBlur = 20;
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, player.r + 10, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+
+    // عيون
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(player.x - 4, player.y - 3, 2, 0, Math.PI * 2);
+    ctx.arc(player.x + 4, player.y - 3, 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function updateHUD() {
+    document.getElementById('gHp').textContent = Math.max(0, Math.round(player.hp));
+    document.getElementById('gWave').textContent = wave;
+    document.getElementById('gScore').textContent = score;
+    document.getElementById('gBest').textContent = best;
+    document.getElementById('bombCount').textContent = bombs;
+    document.getElementById('shieldCount').textContent = shields;
+  }
+
+  function gameOver() {
+    running = false;
+    if (score > best) {
+      best = score;
+      localStorage.setItem('neon_best', best);
+    }
+    document.getElementById('gFinalScore').textContent = score;
+    document.getElementById('gFinalWave').textContent = wave;
+    document.getElementById('gFinalBest').textContent = best;
+    document.getElementById('gBest').textContent = best;
+    document.getElementById('gOver').style.display = 'flex';
+  }
+
+  // ═══ التحكم ═══
+  function handleMove(x, y) {
+    var rect = canvas.getBoundingClientRect();
+    touchTarget = {
+      x: (x - rect.left) * (canvas.width / rect.width),
+      y: (y - rect.top) * (canvas.height / rect.height)
+    };
+  }
+
+  canvas.addEventListener('touchstart', function(e) {
+    if (!running) return;
+    e.preventDefault();
+    handleMove(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', function(e) {
+    if (!running) return;
+    e.preventDefault();
+    handleMove(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+
+  canvas.addEventListener('mousedown', function(e) {
+    if (!running) return;
+    handleMove(e.clientX, e.clientY);
+  });
+
+  canvas.addEventListener('mousemove', function(e) {
+    if (!running) return;
+    if (e.buttons === 1) handleMove(e.clientX, e.clientY);
+  });
+
+  // ═══ أزرار ═══
+  window.useBomb = function() {
+    if (!running || bombs <= 0) return;
+    bombs--;
+    updateHUD();
+    for (var i = enemies.length - 1; i >= 0; i--) {
+      var e = enemies[i];
+      addParticles(e.x, e.y, 15, '#ff0044', 300);
+      score += 5;
+    }
+    enemies = [];
+    addParticles(player.x, player.y, 40, '#ff0044', 500);
+    updateHUD();
+  };
+
+  window.useShield = function() {
+    if (!running || shields <= 0) return;
+    shields--;
+    shieldActive = 5;
+    updateHUD();
+    addParticles(player.x, player.y, 30, '#00ccff', 400);
+  };
+
+  window.startGame = startGame;
+})();
+</script>
+
