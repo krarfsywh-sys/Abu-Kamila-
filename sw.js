@@ -1,31 +1,15 @@
-// Service Worker - يحدّث تلقائياً
-const CACHE_NAME = 'ak-v' + Date.now();
-const BASE = '/Abu-Kamila-/';
-
-self.addEventListener('install', (event) => {
-  self.skipWaiting();
+const CACHE = 'karrar-luck-v1';
+const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((names) => {
-      return Promise.all(
-        names.map(name => caches.delete(name))
-      );
-    })
-  );
-  self.clients.claim();
+self.addEventListener('activate', e => {
+  e.waitUntil(self.clients.claim());
 });
-
-self.addEventListener('fetch', (event) => {
-  // دائماً من الشبكة أولاً
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        return response;
-      })
-      .catch(() => {
-        return caches.match(event.request);
-      })
-  );
+self.addEventListener('fetch', e => {
+  if (e.request.method === 'GET') {
+    e.respondWith(
+      fetch(e.request).catch(() => caches.match(e.request))
+    );
+  }
 });

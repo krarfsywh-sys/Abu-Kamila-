@@ -1,0 +1,13 @@
+{
+  "name": "حاسبة الحظ - eFootball",
+  "short_name": "حاسبة الحظ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f0c29",
+  "theme_color": "#0a66ff",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

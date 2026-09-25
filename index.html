@@ -1,1497 +1,230 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-
-
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Karrar</title>
-<meta name="description" content="Karrar - الموقع الرسمي">
-<meta name="theme-color" content="#00ff88">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a66ff">
+<title>حاسبة الحظ - eFootball</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,sans-serif; }
-body { background:#000; color:#fff; min-height:100vh; overflow-x:hidden; }
-
-#matrix { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; opacity:.2; }
-
-.particles { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
-.particle { position:absolute; width:3px; height:3px; background:#00ff88; border-radius:50%; box-shadow:0 0 10px #00ff88; animation:float 8s linear infinite; }
-@keyframes float { 0% { transform:translateY(100vh) scale(0); opacity:0; } 10% { opacity:1; } 90% { opacity:1; } 100% { transform:translateY(-10vh) scale(1); opacity:0; } }
-
-header { padding:25px 20px; text-align:center; border-bottom:2px solid #00ff88; background:rgba(0,0,0,.7); backdrop-filter:blur(15px); position:sticky; top:0; z-index:100; box-shadow:0 0 30px rgba(0,255,136,.3); }
-.logo { font-size:32px; font-weight:bold; color:#00ff88; text-shadow:0 0 20px #00ff88; letter-spacing:3px; animation:glow 2s ease-in-out infinite alternate; }
-@keyframes glow { from { text-shadow:0 0 20px #00ff88; } to { text-shadow:0 0 30px #00ff88, 0 0 60px #00ff88; } }
-.visitor-counter { color:#00ff88; font-size:13px; margin-top:8px; opacity:.8; }
-
-.hero { text-align:center; padding:70px 20px; }
-.hero h1 { font-size:52px; background:linear-gradient(90deg,#00ff88,#00ccff,#ff00ff,#00ff88); background-size:300% auto; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:shine 4s linear infinite; margin-bottom:20px; }
-@keyframes shine { to { background-position:300% center; } }
-.hero p { color:#aaa; font-size:20px; margin-bottom:30px; min-height:30px; }
-.cursor { color:#00ff88; animation:blink 1s infinite; }
-@keyframes blink { 50% { opacity:0; } }
-.badge { display:inline-block; padding:8px 20px; border:2px solid #00ff88; border-radius:50px; color:#00ff88; font-size:14px; margin:5px; background:rgba(0,255,136,.05); transition:.3s; }
-.badge:hover { background:#00ff88; color:#000; transform:scale(1.1); box-shadow:0 0 20px #00ff88; }
-
-.section { padding:60px 20px; max-width:900px; margin:0 auto; }
-.section h2 { color:#00ff88; font-size:32px; margin-bottom:30px; text-align:center; text-shadow:0 0 20px #00ff88; }
-.section h2::after { content:''; display:block; width:60px; height:3px; background:#00ff88; margin:15px auto 0; box-shadow:0 0 15px #00ff88; animation:pulse-width 2s ease-in-out infinite; }
-@keyframes pulse-width { 0%,100% { width:60px; } 50% { width:120px; } }
-
-.card { background:rgba(10,10,10,.8); border:1px solid #00ff88; border-radius:15px; padding:25px; margin-bottom:20px; transition:.4s; position:relative; overflow:hidden; }
-.card:hover { transform:translateY(-5px); box-shadow:0 15px 40px rgba(0,255,136,.3); }
-.card h3 { color:#00ff88; margin-bottom:10px; font-size:20px; }
-.card p { color:#bbb; line-height:1.8; }
-
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:15px; margin-top:20px; }
-.tool { background:rgba(0,255,136,.05); border:1px solid rgba(0,255,136,.3); border-radius:12px; padding:20px; text-align:center; transition:.3s; cursor:pointer; }
-.tool:hover { transform:scale(1.08); border-color:#00ff88; box-shadow:0 0 25px rgba(0,255,136,.5); }
-.tool .icon { font-size:32px; margin-bottom:10px; }
-.tool .name { color:#00ff88; font-size:14px; }
-
-.contact-links { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:30px; }
-.contact-link { display:flex; align-items:center; gap:10px; padding:15px 25px; background:rgba(0,255,136,.1); border:1px solid #00ff88; border-radius:50px; color:#00ff88; text-decoration:none; transition:.3s; }
-.contact-link:hover { background:#00ff88; color:#000; transform:scale(1.1); box-shadow:0 0 25px #00ff88; }
-
-.music-btn { position:fixed; bottom:20px; left:20px; width:55px; height:55px; border-radius:50%; background:#00ff88; border:none; color:#000; font-size:22px; cursor:pointer; box-shadow:0 0 25px #00ff88; transition:.3s; z-index:999; }
-.music-btn:hover { transform:scale(1.15) rotate(15deg); }
-.music-btn.playing { animation:rotate 2s linear infinite; }
-@keyframes rotate { to { transform:rotate(360deg); } }
-
-.install-btn { display:none; position:fixed; bottom:90px; left:20px; padding:15px 25px; background:linear-gradient(135deg,#00ff88,#00cc66); color:#000; border:none; border-radius:50px; font-size:16px; font-weight:bold; cursor:pointer; box-shadow:0 0 30px rgba(0,255,136,.6); z-index:999; animation:pulseInstall 2s infinite; }
-@keyframes pulseInstall { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
-
-footer { text-align:center; padding:40px 20px; border-top:2px solid #00ff88; color:#666; margin-top:50px; background:rgba(0,0,0,.5); }
-footer .heart { color:#ff0044; animation:pulse 1s infinite; display:inline-block; }
-@keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.3); } }
-
-.fade-in { opacity:0; transform:translateY(30px); transition:opacity .8s, transform .8s; }
-.fade-in.visible { opacity:1; transform:translateY(0); }
-
-@media (max-width:600px) {
-  .hero h1 { font-size:32px; }
-  .logo { font-size:20px; }
-  .section { padding:40px 15px; }
-  .section h2 { font-size:24px; }
-  .hero p { font-size:16px; }
-}
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #fff; min-height: 100vh; padding: 16px;
+  }
+  .container { max-width: 500px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 20px; }
+  h1 { font-size: 24px; margin: 8px 0; color: #4da3ff; }
+  .sub { color: #aaa; font-size: 13px; }
+  .card {
+    background: rgba(255,255,255,0.07); border-radius: 16px;
+    padding: 16px; margin-bottom: 14px;
+    border: 1px solid rgba(77,163,255,0.2);
+    backdrop-filter: blur(8px);
+  }
+  .card h2 { font-size: 16px; margin: 0 0 10px; color: #4da3ff; }
+  label { display: block; font-size: 13px; margin-bottom: 6px; color: #ccc; }
+  select, input {
+    width: 100%; padding: 10px; border-radius: 10px;
+    border: 1px solid #444; background: #1a1a2e; color: #fff;
+    font-size: 15px; margin-bottom: 10px; font-family: inherit;
+  }
+  button {
+    width: 100%; padding: 12px; border-radius: 10px; border: none;
+    background: linear-gradient(90deg, #0a66ff, #4da3ff);
+    color: #fff; font-size: 16px; font-weight: bold;
+    cursor: pointer; font-family: inherit;
+  }
+  button:active { transform: scale(0.98); }
+  #installBtn {
+    background: linear-gradient(90deg, #0066ff, #00c6ff);
+    display: none; margin-bottom: 14px;
+    box-shadow: 0 4px 15px rgba(0,102,255,0.4);
+  }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { background: rgba(77,163,255,0.1); padding: 12px; border-radius: 10px; text-align: center; }
+  .stat .num { font-size: 22px; font-weight: bold; color: #4da3ff; }
+  .stat .lbl { font-size: 11px; color: #aaa; margin-top: 4px; }
+  .luck-meter {
+    height: 20px; background: #1a1a2e; border-radius: 10px;
+    overflow: hidden; margin: 10px 0;
+  }
+  .luck-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #ff4d4d, #ffaa00, #00cc66);
+    transition: width 0.5s ease;
+  }
+  ul { list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto; }
+  li {
+    padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 13px; display: flex; justify-content: space-between;
+  }
+  .rating-badge { padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+  .r-100 { background: #444; }
+  .r-101 { background: #8b5cf6; }
+  .r-102 { background: #3b82f6; }
+  .r-103 { background: #06b6d4; }
+  .r-104 { background: #10b981; }
+  .r-105 { background: #eab308; color: #000; }
+  .r-106 { background: #f97316; }
+  .r-107 { background: #ef4444; }
+  .r-108 { background: #ec4899; }
+  .r-109 { background: #a855f7; }
 </style>
 </head>
 <body>
+<div class="container">
+  <header>
+    <h1>🎯 حاسبة الحظ</h1>
+    <div class="sub">eFootball | تسجيل وتحليل السحبات</div>
+  </header>
 
-<canvas id="matrix"></canvas>
-<div class="particles" id="particles"></div>
+  <button id="installBtn">📲 تثبيت التطبيق</button>
 
-
-<div class="version-badge" style="
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  padding: 8px 15px;
-  background: #00ff88;
-  color: #000;
-  font-weight: bold;
-  font-size: 13px;
-  border-radius: 50px;
-  z-index: 9999;
-  box-shadow: 0 0 20px #00ff88;
-  font-family: Arial;
-">v3.0 ✅ محدّث</div>
-
-<header>
-  <div class="logo">KARRAR</div>
-  <div class="visitor-counter">👁️ <span id="visits">...</span> زيارة</div>
-</header>
-
-<section class="hero">
-  <h1>Karrar</h1>
-  <p><span id="typing"></span><span class="cursor">|</span></p>
-  <div>
-    <span class="badge">🇮🇶 Iraq</span>
-    <span class="badge">💻 Developer</span>
-    <span class="badge">🎨 Designer</span>
-  </div>
-</section>
-
-<section class="section fade-in" id="about">
-  <h2>عني</h2>
   <div class="card">
-    <h3>👋 مرحبا</h3>
-    <p>أنا <b style="color:#00ff88">Karrar</b>، من العراق. أصنع محتوى رقمي، أطوّر أدوات تقنية، وأصمم تطبيقات. أستخدم Termux وأدوات مفتوحة المصدر لبناء أشياء مفيدة.</p>
-  </div>
-</section>
-
-<section class="section fade-in" id="work">
-  <h2>مشاريعي</h2>
-  <div class="grid">
-    <div class="tool"><div class="icon">🎬</div><div class="name">AI Video</div></div>
-    <div class="tool"><div class="icon">🎨</div><div class="name">Photo Editor</div></div>
-    <div class="tool"><div class="icon">🎮</div><div class="name">eFootball</div></div>
-    <div class="tool"><div class="icon">🌐</div><div class="name">Net Booster</div></div>
-    <div class="tool"><div class="icon">📱</div><div class="name">PWA Apps</div></div>
-    <div class="tool"><div class="icon">🤖</div><div class="name">Telegram</div></div>
-  </div>
-</section>
-
-
-<!-- قسم تيك توك -->
-
-
-
-
-
-
-<!-- قسم تيك توك - يفتح التطبيق مباشرة -->
-<section class="section fade-in" id="tiktok">
-  <h2>🎵 حسابي على تيك توك</h2>
-  <p style="text-align:center; color:#aaa; margin-bottom:25px;">
-    تابعني — محتوى تقني وتصميم
-  </p>
-  
-  <div style="max-width:400px; margin:0 auto;">
-    <div class="card" style="text-align:center; padding:40px 25px; background:linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,15,15,0.95)); border:2px solid #00ff88; position:relative; overflow:hidden;">
-      
-      <div style="position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:conic-gradient(from 0deg, transparent, rgba(0,255,136,0.15), transparent); animation:rotate 4s linear infinite;"></div>
-      
-      <div style="position:relative; z-index:1;">
-        
-        <div style="font-size:70px; margin-bottom:15px; animation:pulseIcon 2s infinite;">🎵</div>
-        
-        <h3 style="color:#00ff88; font-size:26px; margin-bottom:8px; text-shadow:0 0 20px #00ff88;">@il2cpp24</h3>
-        
-        <p style="color:#fff; font-size:15px; margin-bottom:25px;">محتوى تقني • تصميم • برمجة</p>
-        
-        <!-- الزر الذكي -->
-        <button onclick="openTikTok()" style="
-          display:inline-block;
-          padding:15px 40px;
-          background:linear-gradient(135deg, #00ff88, #00cc66);
-          color:#000;
-          border:none;
-          border-radius:50px;
-          font-weight:bold;
-          font-size:16px;
-          box-shadow:0 0 30px rgba(0,255,136,0.6);
-          cursor:pointer;
-          animation:btnPulse 2s infinite;
-          font-family:Arial;
-        ">
-          🚀 افتح حسابي
-        </button>
-        
-        <p style="color:#888; font-size:12px; margin-top:15px;">يفتح التطبيق مباشرة إن كان مثبت</p>
-      </div>
+    <h2>📊 مؤشر الحظ الشخصي</h2>
+    <div class="luck-meter"><div class="luck-fill" id="luckFill"></div></div>
+    <div style="text-align:center;font-size:14px;" id="luckText">0%</div>
+    <div class="stat-grid" style="margin-top:12px;">
+      <div class="stat"><div class="num" id="totalOpens">0</div><div class="lbl">عدد السحبات</div></div>
+      <div class="stat"><div class="num" id="strongPlayers">0</div><div class="lbl">لاعبين 105+</div></div>
+      <div class="stat"><div class="num" id="bestTime">--</div><div class="lbl">أفضل وقت</div></div>
+      <div class="stat"><div class="num" id="avgLuck">0</div><div class="lbl">متوسط الحظ</div></div>
     </div>
   </div>
-</section>
+
+  <div class="card">
+    <h2>🎮 تسجيل سحبة جديدة</h2>
+    <label>نوع البكج</label>
+    <select id="packType">
+      <option value="100">بكج 100 لاعب</option>
+      <option value="40">بكج 40 لاعب</option>
+      <option value="10">بكج 10 لاعبين</option>
+      <option value="1">سحبة واحدة</option>
+    </select>
+    <label>أعلى تقييم طلعلك</label>
+    <select id="rating">
+      <option value="100">100 أو أقل</option>
+      <option value="101">101</option>
+      <option value="102">102</option>
+      <option value="103">103</option>
+      <option value="104">104</option>
+      <option value="105">105</option>
+      <option value="106">106</option>
+      <option value="107">107</option>
+      <option value="108">108</option>
+      <option value="109">109+</option>
+    </select>
+    <button id="openBtn">🎲 سجل السحبة</button>
+  </div>
+
+  <div class="card">
+    <h2>📈 إحصائيات اللاعبين</h2>
+    <div id="playerStats" style="font-size:13px;color:#aaa;">ماكو بيانات بعد.</div>
+  </div>
+
+  <div class="card">
+    <h2>🕐 سجل السحبات</h2>
+    <ul id="history"><li style="color:#666;">ماكو سحبات مسجلة بعد.</li></ul>
+  </div>
+</div>
 
 <script>
-function openTikTok() {
-  const username = 'il2cpp24';
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  
-  // الروابط
-  const webUrl = 'https://www.tiktok.com/@' + username;
-  const androidDeepLink = 'snssdk1233://user/profile/' + username;
-  const iosDeepLink = 'snssdk1233://user/profile/' + username;
-  
-  if (isAndroid) {
-    // جرب التطبيق أولاً
-    const intentUrl = 'intent://user/profile/' + username + 
-                      '#Intent;scheme=snssdk1233;package=com.zhiliaoapp.musically;S.browser_fallback_url=' + 
-                      encodeURIComponent(webUrl) + ';end';
-    
-    // استخدم location.href للأندرويد
-    window.location.href = intentUrl;
-    
-  } else if (isIOS) {
-    // iOS: جرب التطبيق ثم ارجع للمتصفح
-    const start = Date.now();
-    window.location.href = iosDeepLink;
-    
-    setTimeout(() => {
-      if (Date.now() - start < 2000) {
-        window.location.href = webUrl;
-      }
-    }, 1500);
-    
-  } else {
-    // متصفح عادي
-    window.open(webUrl, '_blank');
-  }
-}
-</script>
-
-<style>
-@keyframes rotate { to { transform: rotate(360deg); } }
-@keyframes pulseIcon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-@keyframes btnPulse {
-  0%, 100% { box-shadow: 0 0 30px rgba(0,255,136,0.6); transform: scale(1); }
-  50% { box-shadow: 0 0 50px rgba(0,255,136,0.9); transform: scale(1.05); }
-}
-</style>
-
-
-
-
-
-
-
-
-
-
-
-<!-- شات الذكاء الاصطناعي - النسخة المطوّرة -->
-<section class="section fade-in" id="ai">
-  <h2>🤖 ذكاء اصطناعي</h2>
-  <p style="text-align:center; color:#aaa; margin-bottom:25px;">
-    اسأل أي شي — رد سريع + ذكاء قوي
-  </p>
-
-  <div class="card" style="padding:0; overflow:hidden; border-color:#00ff88; box-shadow:0 0 40px rgba(0,255,136,0.2);">
-    
-    <!-- الرأس -->
-    <div style="padding:15px 20px; background:linear-gradient(135deg, #00ff88, #00cc66); display:flex; align-items:center; gap:10px;">
-      <div style="width:40px; height:40px; background:#000; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow:0 0 15px rgba(0,0,0,0.5);">🤖</div>
-      <div style="flex:1;">
-        <div style="color:#000; font-weight:bold; font-size:16px;">Karrar AI</div>
-        <div style="color:#000; font-size:12px; opacity:0.75; display:flex; align-items:center; gap:5px;">
-          <span style="width:8px; height:8px; background:#00ff00; border-radius:50%; animation:blink 1.5s infinite; display:inline-block;"></span>
-          متصل • رد سريع
-        </div>
-      </div>
-      <button onclick="clearChat()" title="محو المحادثة" style="width:36px; height:36px; background:rgba(0,0,0,0.2); border:none; border-radius:50%; color:#000; font-size:16px; cursor:pointer; transition:0.3s;">🔄</button>
-    </div>
-
-    <!-- الرسائل -->
-    <div id="chatMessages" style="height:420px; overflow-y:auto; padding:20px; background:linear-gradient(180deg, #0a0a0a, #050505); display:flex; flex-direction:column; gap:12px;">
-      
-      <div style="display:flex; gap:10px; align-items:flex-start;">
-        <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; box-shadow:0 0 15px rgba(0,255,136,0.5);">🤖</div>
-        <div style="background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.7; border:1px solid rgba(0,255,136,0.2);">
-          أهلاً! أنا <b style="color:#00ff88">Karrar AI</b> 🤖<br>اسألني أي شي بالعربي — راح أجاوبك بسرعة وبقوة.
-        </div>
-      </div>
-
-    </div>
-
-    <!-- الإدخال -->
-    <div style="padding:15px; background:#111; border-top:1px solid rgba(0,255,136,0.4); display:flex; gap:10px; align-items:center;">
-      <input 
-        type="text" 
-        id="chatInput" 
-        placeholder="اكتب سؤالك هنا..." 
-        onkeypress="if(event.key==='Enter' && !event.shiftKey) sendMessage()"
-        autocomplete="off"
-        style="flex:1; padding:14px 20px; background:#1a1a1a; color:#fff; border:2px solid rgba(0,255,136,0.3); border-radius:28px; font-size:15px; outline:none; transition:0.3s; font-family:inherit;"
-        onfocus="this.style.borderColor='#00ff88'; this.style.boxShadow='0 0 20px rgba(0,255,136,0.3)'"
-        onblur="this.style.borderColor='rgba(0,255,136,0.3)'; this.style.boxShadow='none'"
-      >
-      <button 
-        onclick="sendMessage()" 
-        id="sendBtn"
-        onmouseover="this.style.transform='scale(1.1) rotate(15deg)'"
-        onmouseout="this.style.transform='scale(1) rotate(0deg)'"
-        style="
-          width:52px; 
-          height:52px; 
-          background:linear-gradient(135deg, #00ff88, #00cc66); 
-          color:#000; 
-          border:none; 
-          border-radius:50%; 
-          cursor:pointer; 
-          display:flex; 
-          align-items:center; 
-          justify-content:center;
-          box-shadow:0 0 20px rgba(0,255,136,0.5);
-          transition:0.3s;
-          flex-shrink:0;
-        "
-        title="إرسال"
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="#000"/>
-        </svg>
-      </button>
-    </div>
-
-  </div>
-
-  <!-- أزرار سريعة -->
-  <div style="text-align:center; margin-top:20px;">
-    <p style="color:#aaa; font-size:13px; margin-bottom:10px;">💡 جرب أسئلة سريعة:</p>
-    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
-      <button onclick="quickAsk('اكتب لي قصة قصيرة')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">📖 قصة قصيرة</button>
-      <button onclick="quickAsk('اعطني نصيحة اليوم')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">💡 نصيحة</button>
-      <button onclick="quickAsk('اكتب لي بيت شعر')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">🎭 بيت شعر</button>
-      <button onclick="quickAsk('اشرح لي الذكاء الاصطناعي ببساطة')" class="btn btn-outline" style="padding:8px 15px; font-size:12px;">🤖 AI</button>
-    </div>
-  </div>
-
-  <p style="text-align:center; color:#666; font-size:11px; margin-top:15px;">
-    ⚠️ الإجابات من AI — قد تحتوي أخطاء
-  </p>
-
-</section>
-
-<script>
-// ═══ Karrar AI Chat - المطوّر ═══
-
-// الـ API السريع
-const AI_API = 'https://text.pollinations.ai/';
-
-// System Prompt — يخلي AI يفكر بقوة
-const SYSTEM_PROMPT = encodeURIComponent(
-  'أنت مساعد ذكي اسمه Karrar AI. تجاوب بالعربي الفصيح المبسط. ردودك سريعة ودقيقة ومفيدة. إذا السؤال يحتاج شرح، اشرح بوضوح. إذا طلب قصة، اكتب قصة جميلة. إذا طلب نصيحة، أعطِ نصيحة حكيمة. كن مفيداً ومحترماً.'
-);
-
-async function sendMessage() {
-  const input = document.getElementById('chatInput');
-  const message = input.value.trim();
-  if (!message) return;
-
-  // عرض رسالة المستخدم
-  addMessage(message, 'user');
-  input.value = '';
-  input.focus();
-
-  // إظهار نقاط التحميل
-  const loadingId = addLoading();
-
-  try {
-    // بناء الرابط — model سريع
-    const url = AI_API + encodeURIComponent(message) + 
-                '?model=openai&system=' + SYSTEM_PROMPT;
-
-    const response = await fetch(url);
-    const reply = await response.text();
-
-    // إزالة التحميل
-    removeLoading(loadingId);
-
-    // عرض الرد بتأثير الكتابة
-    typeMessage(reply.trim());
-
-  } catch (err) {
-    removeLoading(loadingId);
-    addMessage('❌ صار خطأ — تحقق من الإنترنت وجرب مرة ثانية', 'ai');
-  }
-}
-
-function addMessage(text, type) {
-  const container = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.style.display = 'flex';
-  div.style.gap = '10px';
-  div.style.alignItems = 'flex-start';
-  div.style.animation = 'slideIn 0.3s ease';
-
-  if (type === 'user') {
-    div.style.flexDirection = 'row-reverse';
-    div.innerHTML = `
-      <div style="width:35px; height:35px; background:linear-gradient(135deg, #00ccff, #0099cc); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; box-shadow:0 0 15px rgba(0,204,255,0.4);">👤</div>
-      <div style="background:linear-gradient(135deg, #003d2b, #002a1e); padding:12px 16px; border-radius:15px; border-top-left-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.6; word-wrap:break-word; border:1px solid rgba(0,204,255,0.3);">${escapeHtml(text)}</div>
-    `;
-  } else {
-    div.innerHTML = `
-      <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; box-shadow:0 0 15px rgba(0,255,136,0.5);">🤖</div>
-      <div style="background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.7; word-wrap:break-word; border:1px solid rgba(0,255,136,0.2);">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
-    `;
-  }
-
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-}
-
-// تأثير الكتابة حرف حرف
-function typeMessage(text) {
-  const container = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.style.display = 'flex';
-  div.style.gap = '10px';
-  div.style.alignItems = 'flex-start';
-  div.style.animation = 'slideIn 0.3s ease';
-
-  const bubble = document.createElement('div');
-  bubble.style.cssText = 'background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.7; word-wrap:break-word; border:1px solid rgba(0,255,136,0.2);';
-
-  div.innerHTML = `
-    <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; box-shadow:0 0 15px rgba(0,255,136,0.5);">🤖</div>
-  `;
-  div.appendChild(bubble);
-  container.appendChild(div);
-
-  // اكتب حرف حرف
-  let i = 0;
-  const speed = 15; // ms per char
-  const interval = setInterval(() => {
-    if (i < text.length) {
-      bubble.innerHTML = escapeHtml(text.substring(0, i + 1)).replace(/\n/g, '<br>');
-      i++;
-      container.scrollTop = container.scrollHeight;
-    } else {
-      clearInterval(interval);
-    }
-  }, speed);
-}
-
-function addLoading() {
-  const container = document.getElementById('chatMessages');
-  const id = 'loading_' + Date.now();
-  const div = document.createElement('div');
-  div.id = id;
-  div.style.display = 'flex';
-  div.style.gap = '10px';
-  div.style.alignItems = 'flex-start';
-  div.style.animation = 'slideIn 0.3s ease';
-  div.innerHTML = `
-    <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; box-shadow:0 0 15px rgba(0,255,136,0.5);">🤖</div>
-    <div style="background:#1a1a1a; padding:14px 18px; border-radius:15px; display:flex; gap:5px; align-items:center; border:1px solid rgba(0,255,136,0.2);">
-      <span style="width:8px; height:8px; background:#00ff88; border-radius:50%; animation:typing 1.4s infinite;"></span>
-      <span style="width:8px; height:8px; background:#00ff88; border-radius:50%; animation:typing 1.4s infinite 0.2s;"></span>
-      <span style="width:8px; height:8px; background:#00ff88; border-radius:50%; animation:typing 1.4s infinite 0.4s;"></span>
-    </div>
-  `;
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-  return id;
-}
-
-function removeLoading(id) {
-  const el = document.getElementById(id);
-  if (el) el.remove();
-}
-
-function quickAsk(text) {
-  document.getElementById('chatInput').value = text;
-  sendMessage();
-}
-
-function clearChat() {
-  if (!confirm('هل تريد محو المحادثة؟')) return;
-  const container = document.getElementById('chatMessages');
-  container.innerHTML = `
-    <div style="display:flex; gap:10px; align-items:flex-start;">
-      <div style="width:35px; height:35px; background:#00ff88; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">🤖</div>
-      <div style="background:#1a1a1a; padding:12px 16px; border-radius:15px; border-top-right-radius:5px; max-width:80%; color:#fff; font-size:14px; line-height:1.7; border:1px solid rgba(0,255,136,0.2);">
-        تم محو المحادثة ✅<br>اسألني أي شي جديد.
-      </div>
-    </div>
-  `;
-}
-
-function escapeHtml(text) {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-// ═══ اختبار السرعة - البينغ يتحرك ═══
-let isTesting = false;
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-async function startTest() {
-  if (isTesting) return;
-  isTesting = true;
-
-  document.getElementById('startBtn').disabled = true;
-  document.getElementById('startBtn').textContent = '⏳ جاري الاختبار...';
-  document.getElementById('progressBox').style.display = 'block';
-  document.getElementById('liveBox').style.display = 'block';
-  document.getElementById('finalBox').style.display = 'none';
-  document.getElementById('detailsBox').style.display = 'none';
-
-  // إعادة تعيين
-  updatePing(0);
-  document.getElementById('dlLive').textContent = '0.0';
-  document.getElementById('ulLive').textContent = '0.0';
-
-  // ═══════════════════════════════════════════
-  // المرحلة 1: البينغ — 10 قياسات متتالية
-  // ═══════════════════════════════════════════
-  setProgress(5, '📡 قياس البينغ...');
-  const pings = [];
-
-  for (let i = 0; i < 10; i++) {
-    const start = performance.now();
-    try {
-      await fetch('https://speed.cloudflare.com/__down?bytes=1000&t=' + Date.now(), { 
-        cache: 'no-store',
-        mode: 'cors'
-      });
-      const time = performance.now() - start;
-      
-      // رقم عشوائي بسيط لمحاكاة التغيير
-      const variation = (Math.random() * 6) - 3;
-      const displayValue = Math.max(1, time + variation);
-      
-      pings.push(displayValue);
-      
-      // تحديث الرقم مباشرة
-      updatePing(Math.round(displayValue));
-      
-      // شريط التقدم
-      const progress = 5 + (i + 1) * 3;
-      setProgress(progress, `📡 بينغ ${i + 1}/10`);
-      
-      // ننتظر قليلاً بين القياسات
-      await sleep(250);
-      
-    } catch(e) {
-      console.log('Ping error:', e);
-    }
-  }
-
-  // ═══════════════════════════════════════════
-  // بينغ نهائي — متوسط آخر 5 قياسات
-  // ═══════════════════════════════════════════
-  const recentPings = pings.slice(-5);
-  const avgPing = recentPings.length > 0 
-    ? Math.round(recentPings.reduce((a,b) => a+b, 0) / recentPings.length)
-    : 0;
-  
-  // عرض الرقم النهائي مع تأثير
-  updatePing(avgPing, true);
-  setProgress(35, '📡 البينغ: ' + avgPing + ' ms');
-  await sleep(500);
-
-  // ═══════════════════════════════════════════
-  // المرحلة 2: التحميل — حقيقي ومباشر
-  // ═══════════════════════════════════════════
-  const dl = await testDownloadLive();
-  setProgress(75, '⬇️ التحميل: ' + dl + ' Mbps');
-  await sleep(300);
-
-  // ═══════════════════════════════════════════
-  // المرحلة 3: الرفع — تدريجي
-  // ═══════════════════════════════════════════
-  setProgress(85, '⬆️ قياس الرفع...');
-  const ul = await testUploadLive();
-  setProgress(95, '✅ جاري التجهيز...');
-
-  // ═══════════════════════════════════════════
-  // المرحلة 4: المعلومات
-  // ═══════════════════════════════════════════
-  await getInfo();
-
-  // ═══════════════════════════════════════════
-  // النتيجة النهائية
-  // ═══════════════════════════════════════════
-  setProgress(100, '✅ اكتمل!');
-  await sleep(600);
-
-  document.getElementById('progressBox').style.display = 'none';
-  document.getElementById('finalBox').style.display = 'block';
-  document.getElementById('detailsBox').style.display = 'block';
-
-  document.getElementById('dlFinal').textContent = dl;
-  document.getElementById('ulFinal').textContent = ul;
-  document.getElementById('pingFinal').textContent = avgPing;
-
-  // تقييم الألعاب
-  const rating = getGamingRating(avgPing, parseFloat(dl));
-  document.getElementById('d-gaming').innerHTML = rating;
-
-  // حفظ
-  window._testResult = {
-    download: dl,
-    upload: ul,
-    ping: avgPing,
-    time: new Date().toLocaleString('ar-EG')
-  };
-
-  document.getElementById('startBtn').disabled = false;
-  document.getElementById('startBtn').textContent = '🚀 ابدأ الاختبار';
-  isTesting = false;
-}
-
-// ═══ تحديث البينغ مع تأثير ═══
-function updatePing(value, isFinal = false) {
-  const el = document.getElementById('pingLive');
-  const bar = document.getElementById('pingBar');
-  const status = document.getElementById('pingStatus');
-  
-  // الرقم
-  el.textContent = value;
-  
-  // تأثير الوميض
-  el.style.transform = 'scale(1.15)';
-  setTimeout(() => el.style.transform = 'scale(1)', 150);
-  
-  // اللون حسب القيمة
-  let color = '#00ff88';
-  let statusText = '';
-  let barWidth = 0;
-  
-  if (value === 0) {
-    color = '#ffaa00';
-    statusText = '—';
-    barWidth = 0;
-  } else if (value <= 30) {
-    color = '#00ff88';
-    statusText = '🔥 ممتاز للعب';
-    barWidth = 20;
-  } else if (value <= 60) {
-    color = '#00ccff';
-    statusText = '✅ جيد للعب';
-    barWidth = 40;
-  } else if (value <= 100) {
-    color = '#ffaa00';
-    statusText = '⚠️ متوسط';
-    barWidth = 60;
-  } else if (value <= 200) {
-    color = '#ff6600';
-    statusText = '🐢 ضعيف';
-    barWidth = 80;
-  } else {
-    color = '#ff0044';
-    statusText = '❌ سيء جداً';
-    barWidth = 100;
-  }
-  
-  el.style.color = color;
-  el.style.textShadow = `0 0 30px ${color}`;
-  bar.style.width = barWidth + '%';
-  status.textContent = statusText;
-  status.style.color = color;
-  
-  if (isFinal) {
-    el.style.transform = 'scale(1.2)';
-    setTimeout(() => el.style.transform = 'scale(1)', 300);
-  }
-}
-
-// ═══ التحميل المباشر ═══
-async function testDownloadLive() {
-  const testUrl = 'https://speed.cloudflare.com/__down?bytes=25000000';
-  const start = performance.now();
-  let downloaded = 0;
-  const speeds = [];
-
-  try {
-    const response = await fetch(testUrl + '&t=' + Date.now(), { cache: 'no-store' });
-    const reader = response.body.getReader();
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      downloaded += value.length;
-
-      const elapsed = (performance.now() - start) / 1000;
-      if (elapsed > 0.3) {
-        const instantSpeed = (downloaded * 8 / elapsed / 1000000);
-        speeds.push(instantSpeed);
-        
-        // متوسط آخر 3 قياسات
-        const recent = speeds.slice(-3);
-        const avg = recent.reduce((a,b) => a+b, 0) / recent.length;
-        
-        // تحديث مباشر
-        document.getElementById('dlLive').textContent = avg.toFixed(1);
-        
-        // التقدم
-        const progress = Math.min(70, 35 + (elapsed * 15));
-        setProgress(progress, '⬇️ ' + avg.toFixed(1) + ' Mbps');
-      }
-    }
-
-    const elapsed = (performance.now() - start) / 1000;
-    const finalSpeed = (downloaded * 8 / elapsed / 1000000);
-    document.getElementById('dlLive').textContent = finalSpeed.toFixed(1);
-    return finalSpeed.toFixed(1);
-
-  } catch (e) {
-    console.log('Download error:', e);
-    return '0';
-  }
-}
-
-// ═══ الرفع التدريجي ═══
-async function testUploadLive() {
-  const dl = parseFloat(document.getElementById('dlLive').textContent) || 5;
-  const target = dl * 0.35;
-  let current = 0;
-  const steps = 25;
-
-  for (let i = 0; i < steps; i++) {
-    const step = target / steps;
-    current += step + (Math.random() * step * 0.6 - step * 0.3);
-    if (current < 0) current = 0;
-    if (current > target * 1.2) current = target * 1.2;
-    
-    document.getElementById('ulLive').textContent = current.toFixed(1);
-    await sleep(70);
-  }
-
-  document.getElementById('ulLive').textContent = target.toFixed(1);
-  return target.toFixed(1);
-}
-
-// ═══ المعلومات ═══
-async function getInfo() {
-  try {
-    const r = await fetch('https://ipapi.co/json/');
-    const data = await r.json();
-    document.getElementById('d-ip').textContent = data.ip || 'غير معروف';
-    document.getElementById('d-loc').textContent = (data.city || '') + ', ' + (data.country_name || '');
-  } catch(e) {
-    document.getElementById('d-ip').textContent = 'غير متاح';
-    document.getElementById('d-loc').textContent = 'غير متاح';
-  }
-
-  if (navigator.connection) {
-    const c = navigator.connection;
-    const types = {
-      'slow-2g': '2G بطيء', '2g': '2G', '3g': '3G', '4g': '4G',
-      'wifi': 'WiFi', 'ethernet': 'كيبل'
-    };
-    document.getElementById('d-type').textContent = types[c.effectiveType] || c.type || 'غير معروف';
-  } else {
-    document.getElementById('d-type').textContent = 'غير متاح';
-  }
-
-  document.getElementById('d-time').textContent = new Date().toLocaleString('ar-EG');
-}
-
-// ═══ تقييم الألعاب ═══
-function getGamingRating(ping, dl) {
-  if (ping <= 30 && dl >= 10) {
-    return '🎮 <b style="color:#00ff88">ممتاز للعب الأونلاين</b> — بينغ منخفض جداً';
-  } else if (ping <= 60 && dl >= 5) {
-    return '🎮 <b style="color:#00ccff">جيد للعب</b> — بينغ مقبول';
-  } else if (ping <= 100 && dl >= 3) {
-    return '⚠️ <b style="color:#ffaa00">متوسط للعب</b> — قد يكون في لاق';
-  } else if (ping <= 200) {
-    return '❌ <b style="color:#ff6600">ضعيف للعب</b> — لاق ملحوظ';
-  } else {
-    return '❌ <b style="color:#ff0044">غير مناسب للعب</b>';
-  }
-}
-
-function setProgress(percent, text) {
-  document.getElementById('progressBar').style.width = percent + '%';
-  document.getElementById('progressText').textContent = text;
-}
-
-function shareResult() {
-  if (!window._testResult) return;
-  const r = window._testResult;
-  const text = '⚡ اختبار سرعة النت\n\n' +
-               '⬇️ التحميل: ' + r.download + ' Mbps\n' +
-               '⬆️ الرفع: ' + r.upload + ' Mbps\n' +
-               '📡 البينغ: ' + r.ping + ' ms\n\n' +
-               '🌐 جربه من: https://krarfsywh-sys.github.io/Abu-Kamila-/';
-
-  if (navigator.share) {
-    navigator.share({ title: 'اختبار السرعة', text: text });
-  } else {
-    navigator.clipboard.writeText(text).then(() => alert('✅ تم النسخ!'));
-  }
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- اختبار سرعة النت - احترافي -->
-<section class="section fade-in" id="speed">
-  <h2>⚡ اختبار سرعة النت</h2>
-  <p style="text-align:center; color:#aaa; margin-bottom:25px;">
-    اختبار حقيقي 100% — أرقام مباشرة تتحدث كل 100ms
-  </p>
-
-  <div class="card" style="padding:20px; border-color:#00ff88; box-shadow:0 0 40px rgba(0,255,136,0.15);">
-
-    <!-- السرعة الرئيسية - العدّاد الكبير -->
-    <div style="text-align:center; margin-bottom:25px;">
-      <div id="mainSpeed" style="font-size:90px; font-weight:bold; color:#00ff88; font-family:'Courier New', monospace; text-shadow:0 0 40px #00ff88; line-height:1; transition:color 0.3s;">0.00</div>
-      <div style="color:#fff; font-size:18px; margin-top:10px;">Mbps</div>
-      <div id="statusText" style="color:#00ff88; font-size:14px; margin-top:8px; min-height:20px;">جاهز للاختبار</div>
-    </div>
-
-    <!-- العدادات الصغيرة -->
-    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:20px;">
-      <div class="card" style="padding:15px 8px; text-align:center; border-color:#ffaa00; background:rgba(255,170,0,0.05);">
-        <div style="font-size:24px; margin-bottom:5px;">📡</div>
-        <div style="color:#888; font-size:10px;">بينغ</div>
-        <div id="pingBox" style="color:#ffaa00; font-size:22px; font-weight:bold; font-family:monospace;">--</div>
-        <div style="color:#666; font-size:9px;">ms</div>
-      </div>
-      <div class="card" style="padding:15px 8px; text-align:center; border-color:#00ccff; background:rgba(0,204,255,0.05);">
-        <div style="font-size:24px; margin-bottom:5px;">📊</div>
-        <div style="color:#888; font-size:10px;">تقلب</div>
-        <div id="jitterBox" style="color:#00ccff; font-size:22px; font-weight:bold; font-family:monospace;">--</div>
-        <div style="color:#666; font-size:9px;">ms</div>
-      </div>
-      <div class="card" style="padding:15px 8px; text-align:center; border-color:#ff0044; background:rgba(255,0,68,0.05);">
-        <div style="font-size:24px; margin-bottom:5px;">⬆️</div>
-        <div style="color:#888; font-size:10px;">رفع</div>
-        <div id="uploadBox" style="color:#ff0044; font-size:22px; font-weight:bold; font-family:monospace;">--</div>
-        <div style="color:#666; font-size:9px;">Mbps</div>
-      </div>
-    </div>
-
-    <!-- الرسم البياني للسرعة -->
-    <div style="background:#000; border-radius:12px; padding:10px; margin-bottom:20px; border:1px solid rgba(0,255,136,0.2);">
-      <canvas id="speedGraph" style="width:100%; height:120px; display:block;"></canvas>
-    </div>
-
-    <!-- مؤشر السرعة -->
-    <div style="position:relative; background:#0a0a0a; border-radius:12px; padding:15px; margin-bottom:20px; border:1px solid rgba(0,255,136,0.2);">
-      <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:10px; color:#888;">
-        <span>0</span>
-        <span>25</span>
-        <span>50</span>
-        <span>100+</span>
-      </div>
-      <div style="height:20px; background:#111; border-radius:10px; overflow:hidden; position:relative;">
-        <div id="speedBar" style="height:100%; width:0%; background:linear-gradient(90deg, #ff0044, #ffaa00, #00ff88); border-radius:10px; transition:width 0.1s linear; box-shadow:0 0 20px currentColor;"></div>
-      </div>
-    </div>
-
-    <!-- زر البدء -->
-    <button onclick="startSpeedTest()" id="startBtn" style="width:100%; padding:20px; background:linear-gradient(135deg, #00ff88, #00cc66); color:#000; border:none; border-radius:14px; font-size:20px; font-weight:bold; cursor:pointer; box-shadow:0 0 30px rgba(0,255,136,0.5); font-family:inherit; transition:0.3s;">
-      🚀 ابدأ الاختبار
-    </button>
-
-  </div>
-
-  <!-- التفاصيل -->
-  <div id="detailsBox" style="display:none; margin-top:20px;">
-    <div class="card" style="padding:0; overflow:hidden;">
-      <table style="width:100%; border-collapse:collapse; font-size:13px;">
-        <tr style="background:rgba(0,255,136,0.08);">
-          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">🌐 IP</td>
-          <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-ip">-</td>
-        </tr>
-        <tr>
-          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">📍 الموقع</td>
-          <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-loc">-</td>
-        </tr>
-        <tr style="background:rgba(0,255,136,0.08);">
-          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">📡 مزود الخدمة</td>
-          <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-isp">-</td>
-        </tr>
-        <tr>
-          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">🔌 نوع الاتصال</td>
-          <td style="padding:12px; color:#fff; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-type">-</td>
-        </tr>
-        <tr style="background:rgba(0,255,136,0.08);">
-          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">🎮 التقييم للعب</td>
-          <td style="padding:12px; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-gaming">-</td>
-        </tr>
-        <tr>
-          <td style="padding:12px; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.2);">📺 التقييم للفيديو</td>
-          <td style="padding:12px; border-bottom:1px solid rgba(0,255,136,0.2);" id="d-video">-</td>
-        </tr>
-        <tr style="background:rgba(0,255,136,0.08);">
-          <td style="padding:12px; color:#00ff88;">💼 التقييم للعمل</td>
-          <td style="padding:12px;" id="d-work">-</td>
-        </tr>
-      </table>
-    </div>
-
-    <div style="text-align:center; margin-top:15px;">
-      <button onclick="shareResult()" style="padding:12px 30px; background:linear-gradient(135deg, #00ff88, #00cc66); color:#000; border:none; border-radius:50px; font-weight:bold; cursor:pointer; font-family:inherit;">📤 مشاركة النتيجة</button>
-    </div>
-  </div>
-
-</section>
-
-<script>
-// ═══ اختبار سرعة النت — واقعي 100% ═══
-
-const CF_DOWN = 'https://speed.cloudflare.com/__down?bytes=';
-const CF_UP = 'https://speed.cloudflare.com/__up';
-
-let isTesting = false;
-let currentColor = '#00ff88';
-
-function setMainSpeed(value, color) {
-  const el = document.getElementById('mainSpeed');
-  const bar = document.getElementById('speedBar');
-  
-  el.textContent = value.toFixed(2);
-  el.style.color = color;
-  el.style.textShadow = `0 0 40px ${color}`;
-  bar.style.width = Math.min(100, (value / 100) * 100) + '%';
-  bar.style.color = color;
-}
-
-function setStatus(text, color = '#00ff88') {
-  const el = document.getElementById('statusText');
-  el.textContent = text;
-  el.style.color = color;
-}
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-async function startSpeedTest() {
-  if (isTesting) return;
-  isTesting = true;
-
-  const btn = document.getElementById('startBtn');
-  btn.disabled = true;
-  btn.textContent = '⏳ جاري الاختبار...';
-  document.getElementById('detailsBox').style.display = 'none';
-
-  // ═══════════════════════════════════════════
-  // 1. قياس البينغ (10 قياسات)
-  // ═══════════════════════════════════════════
-  setStatus('📡 قياس البينغ...', '#ffaa00');
-  setMainSpeed(0, '#ffaa00');
-  
-  const pings = [];
-  for (let i = 0; i < 10; i++) {
-    const start = performance.now();
-    try {
-      await fetch(CF_DOWN + '1000&t=' + Date.now(), { cache: 'no-store', mode: 'cors' });
-      const time = performance.now() - start;
-      pings.push(time);
-      
-      const avg = pings.reduce((a,b) => a+b, 0) / pings.length;
-      document.getElementById('pingBox').textContent = Math.round(avg);
-      
-      // ارسم البيان للبينغ
-      drawGraphPoint(-1, time, '#ffaa00');
-    } catch(e) {}
-    await sleep(100);
-  }
-  
-  const avgPing = pings.length ? Math.round(pings.reduce((a,b) => a+b, 0) / pings.length) : 0;
-  const minPing = pings.length ? Math.round(Math.min(...pings)) : 0;
-  const maxPing = pings.length ? Math.round(Math.max(...pings)) : 0;
-  const jitter = maxPing - minPing;
-  
-  document.getElementById('pingBox').textContent = avgPing;
-  document.getElementById('jitterBox').textContent = jitter;
-  
-  setStatus('✅ البينغ: ' + avgPing + 'ms — جاري التحميل...', '#00ff88');
-  await sleep(500);
-
-  // ═══════════════════════════════════════════
-  // 2. قياس التحميل (مباشر)
-  // ═══════════════════════════════════════════
-  setStatus('⬇️ قياس التحميل...', '#00ff88');
-  resetGraph();
-  
-  const dlResult = await measureDownload();
-  
-  setStatus('✅ التحميل: ' + dlResult + ' Mbps — جاري الرفع...', '#00ff88');
-  await sleep(500);
-
-  // ═══════════════════════════════════════════
-  // 3. قياس الرفع
-  // ═══════════════════════════════════════════
-  setStatus('⬆️ قياس الرفع...', '#ff0044');
-  resetGraph();
-  
-  const ulResult = await measureUpload();
-  
-  document.getElementById('uploadBox').textContent = ulResult;
-  document.getElementById('mainSpeed').textContent = dlResult;
-  document.getElementById('mainSpeed').style.color = '#00ff88';
-  
-  setStatus('✅ اكتمل الاختبار!', '#00ff88');
-  
-  // ═══════════════════════════════════════════
-  // 4. جلب المعلومات
-  // ═══════════════════════════════════════════
-  await getInfo();
-  
-  // ═══════════════════════════════════════════
-  // 5. التقييمات
-  // ═══════════════════════════════════════════
-  showRatings(parseFloat(dlResult), parseFloat(ulResult), avgPing, jitter);
-  
-  document.getElementById('detailsBox').style.display = 'block';
-  btn.disabled = false;
-  btn.textContent = '🔄 اختبار جديد';
-  isTesting = false;
-  
-  window._speedResult = {
-    download: dlResult,
-    upload: ulResult,
-    ping: avgPing,
-    jitter: jitter
-  };
-}
-
-// ═══ قياس التحميل — مباشر ═══
-async function measureDownload() {
-  let totalBytes = 0;
-  const startTime = performance.now();
-  let lastUpdate = startTime;
-  let lastBytes = 0;
-  let bestSpeed = 0;
-  let samples = [];
-  
-  try {
-    // جرب عدة أحجام — الأكبر يعطي نتيجة أدق
-    const response = await fetch(CF_DOWN + '25000000&t=' + Date.now(), { 
-      cache: 'no-store',
-      mode: 'cors'
-    });
-    const reader = response.body.getReader();
-    
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      
-      totalBytes += value.length;
-      const now = performance.now();
-      
-      // تحديث كل 100ms
-      if (now - lastUpdate >= 100) {
-        const timeDiff = (now - lastUpdate) / 1000;
-        const bytesDiff = totalBytes - lastBytes;
-        const instantSpeed = (bytesDiff * 8) / (timeDiff * 1000000);
-        
-        samples.push(instantSpeed);
-        if (instantSpeed > bestSpeed) bestSpeed = instantSpeed;
-        
-        // متوسط آخر 5 قياسات — أرقام مستقرة
-        const recent = samples.slice(-5);
-        const smooth = recent.reduce((a,b) => a+b, 0) / recent.length;
-        
-        // الألوان حسب السرعة
-        let color = '#ff0044';
-        if (smooth > 50) color = '#00ff88';
-        else if (smooth > 20) color = '#00ccff';
-        else if (smooth > 10) color = '#ffaa00';
-        else if (smooth > 5) color = '#ff6600';
-        
-        setMainSpeed(smooth, color);
-        drawGraphPoint((now - startTime) / 1000, instantSpeed, color);
-        
-        lastUpdate = now;
-        lastBytes = totalBytes;
-      }
-    }
-    
-    const totalTime = (performance.now() - startTime) / 1000;
-    const finalSpeed = (totalBytes * 8) / (totalTime * 1000000);
-    
-    // النتيجة النهائية = متوسط كل القياسات
-    const avg = samples.length ? samples.reduce((a,b) => a+b, 0) / samples.length : finalSpeed;
-    
-    setMainSpeed(avg, '#00ff88');
-    return avg.toFixed(2);
-    
-  } catch(e) {
-    console.log('Download error:', e);
-    return '0.00';
-  }
-}
-
-// ═══ قياس الرفع — مباشر ═══
-async function measureUpload() {
-  const dataSize = 5000000; // 5 MB
-  const data = new Uint8Array(dataSize);
-  
-  // املأ البيانات
-  for (let i = 0; i < dataSize; i += 1000) {
-    data[i] = Math.floor(Math.random() * 256);
-  }
-  
-  try {
-    const startTime = performance.now();
-    
-    await fetch(CF_UP, {
-      method: 'POST',
-      body: data,
-      cache: 'no-store',
-      mode: 'cors'
-    });
-    
-    const totalTime = (performance.now() - startTime) / 1000;
-    const speed = (dataSize * 8) / (totalTime * 1000000);
-    
-    // عرض مباشر — لا يحصل قياس فوري لكن النتيجة النهائية واقعية
-    document.getElementById('uploadBox').textContent = speed.toFixed(2);
-    
-    return speed.toFixed(2);
-    
-  } catch(e) {
-    // إذا فشل، نقدّر من التحميل
-    const dl = parseFloat(document.getElementById('mainSpeed').textContent) || 1;
-    const estimated = dl * 0.35;
-    document.getElementById('uploadBox').textContent = estimated.toFixed(2);
-    return estimated.toFixed(2);
-  }
-}
-
-// ═══ الرسم البياني ═══
-let graphData = [];
-const graphCanvas = document.getElementById('speedGraph');
-const graphCtx = graphCanvas.getContext('2d');
-
-function resizeGraph() {
-  const rect = graphCanvas.getBoundingClientRect();
-  graphCanvas.width = rect.width;
-  graphCanvas.height = rect.height;
-}
-setTimeout(resizeGraph, 300);
-window.addEventListener('resize', resizeGraph);
-
-function resetGraph() {
-  graphData = [];
-  drawGraph();
-}
-
-function drawGraphPoint(time, speed, color) {
-  graphData.push({ speed, color });
-  if (graphData.length > 200) graphData.shift();
-  drawGraph();
-}
-
-function drawGraph() {
-  graphCtx.fillStyle = '#000';
-  graphCtx.fillRect(0, 0, graphCanvas.width, graphCanvas.height);
-  
-  // شبكة
-  graphCtx.strokeStyle = 'rgba(0,255,136,0.1)';
-  graphCtx.lineWidth = 1;
-  for (let i = 0; i <= 4; i++) {
-    const y = (graphCanvas.height / 4) * i;
-    graphCtx.beginPath();
-    graphCtx.moveTo(0, y);
-    graphCtx.lineTo(graphCanvas.width, y);
-    graphCtx.stroke();
-  }
-  
-  if (graphData.length < 2) return;
-  
-  // رسم خط السرعة
-  const maxSpeed = Math.max(...graphData.map(d => d.speed), 10);
-  const stepX = graphCanvas.width / (graphData.length - 1);
-  
-  graphCtx.beginPath();
-  graphCtx.strokeStyle = '#00ff88';
-  graphCtx.lineWidth = 2;
-  graphCtx.shadowColor = '#00ff88';
-  graphCtx.shadowBlur = 10;
-  
-  graphData.forEach((d, i) => {
-    const x = i * stepX;
-    const y = graphCanvas.height - (d.speed / maxSpeed) * graphCanvas.height * 0.9;
-    if (i === 0) graphCtx.moveTo(x, y);
-    else graphCtx.lineTo(x, y);
+const STORAGE_KEY = 'efootball_luck_data';
+let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"opens":[]}');
+
+function calcLuck() {
+  if (data.opens.length === 0) return 0;
+  let totalScore = 0;
+  data.opens.forEach(o => {
+    let base = o.rating - 100;
+    if (base < 0) base = 0;
+    totalScore += base * 10;
   });
-  graphCtx.stroke();
+  return Math.min(100, Math.round(totalScore / data.opens.length));
+}
+
+function render() {
+  const opens = data.opens;
+  document.getElementById('totalOpens').textContent = opens.length;
+  const strong = opens.filter(o => o.rating >= 105).length;
+  document.getElementById('strongPlayers').textContent = strong;
   
-  // تعبئة تحت الخط
-  graphCtx.lineTo(graphCanvas.width, graphCanvas.height);
-  graphCtx.lineTo(0, graphCanvas.height);
-  graphCtx.closePath();
-  graphCtx.fillStyle = 'rgba(0, 255, 136, 0.1)';
-  graphCtx.fill();
-  graphCtx.shadowBlur = 0;
-}
+  const luck = calcLuck();
+  document.getElementById('luckFill').style.width = luck + '%';
+  document.getElementById('luckText').textContent = luck + '%';
+  document.getElementById('avgLuck').textContent = luck;
 
-// ═══ المعلومات ═══
-async function getInfo() {
-  try {
-    const r = await fetch('https://ipapi.co/json/');
-    const data = await r.json();
-    document.getElementById('d-ip').textContent = data.ip || '-';
-    document.getElementById('d-loc').textContent = (data.city || '') + ', ' + (data.country_name || '');
-    document.getElementById('d-isp').textContent = data.org || '-';
-  } catch(e) {}
-  
-  if (navigator.connection) {
-    const types = { 'slow-2g': '2G', '2g': '2G', '3g': '3G', '4g': '4G', 'wifi': 'WiFi' };
-    document.getElementById('d-type').textContent = types[navigator.connection.effectiveType] || navigator.connection.effectiveType;
+  // أفضل وقت
+  if (opens.length > 0) {
+    const hourCount = {};
+    opens.forEach(o => {
+      const h = new Date(o.time).getHours();
+      hourCount[h] = (hourCount[h] || 0) + (o.rating - 100);
+    });
+    let bestHour = 0, bestVal = -1;
+    for (const h in hourCount) {
+      if (hourCount[h] > bestVal) { bestVal = hourCount[h]; bestHour = h; }
+    }
+    document.getElementById('bestTime').textContent = bestHour + ':00';
   }
-}
 
-// ═══ التقييمات ═══
-function showRatings(dl, ul, ping, jitter) {
-  // للألعاب
-  const gamesEl = document.getElementById('d-gaming');
-  if (ping <= 30 && jitter < 10 && dl >= 10) {
-    gamesEl.innerHTML = '🎮 <b style="color:#00ff88">ممتاز جداً</b> — للعب الأونلاين';
-  } else if (ping <= 60 && jitter < 30) {
-    gamesEl.innerHTML = '🎮 <b style="color:#00ccff">جيد</b> — للعب';
-  } else if (ping <= 100) {
-    gamesEl.innerHTML = '⚠️ <b style="color:#ffaa00">متوسط</b> — قد يكون لاق';
+  // إحصائيات اللاعبين
+  const stats = {};
+  opens.forEach(o => { stats[o.rating] = (stats[o.rating] || 0) + 1; });
+  let statsHtml = '';
+  Object.keys(stats).sort((a,b) => b-a).forEach(r => {
+    statsHtml += `<div>تقييم ${r}: ${stats[r]} مرة</div>`;
+  });
+  document.getElementById('playerStats').innerHTML = statsHtml || 'ماكو بيانات بعد.';
+
+  // السجل
+  const hist = document.getElementById('history');
+  if (opens.length === 0) {
+    hist.innerHTML = '<li style="color:#666;">ماكو سحبات مسجلة بعد.</li>';
   } else {
-    gamesEl.innerHTML = '❌ <b style="color:#ff0044">ضعيف</b> — لاق عالي';
-  }
-  
-  // للفيديو
-  const videoEl = document.getElementById('d-video');
-  if (dl >= 25) {
-    videoEl.innerHTML = '📺 <b style="color:#00ff88">4K ممتاز</b>';
-  } else if (dl >= 10) {
-    videoEl.innerHTML = '📺 <b style="color:#00ccff">1080p HD</b>';
-  } else if (dl >= 5) {
-    videoEl.innerHTML = '📺 <b style="color:#ffaa00">720p</b>';
-  } else {
-    videoEl.innerHTML = '📺 <b style="color:#ff0044">480p فقط</b>';
-  }
-  
-  // للعمل
-  const workEl = document.getElementById('d-work');
-  if (dl >= 50 && ul >= 10) {
-    workEl.innerHTML = '💼 <b style="color:#00ff88">ممتاز</b> — للاجتماعات والرفع';
-  } else if (dl >= 20 && ul >= 5) {
-    workEl.innerHTML = '💼 <b style="color:#00ccff">جيد</b> — للعمل اليومي';
-  } else if (dl >= 10) {
-    workEl.innerHTML = '⚠️ <b style="color:#ffaa00">مقبول</b>';
-  } else {
-    workEl.innerHTML = '❌ <b style="color:#ff0044">ضعيف</b>';
+    hist.innerHTML = opens.slice(-20).reverse().map(o => {
+      const d = new Date(o.time);
+      const t = d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
+      const cls = 'r-' + Math.min(o.rating, 109);
+      return `<li><span>بكج ${o.packType} | ${t}</span><span class="rating-badge ${cls}">${o.rating}</span></li>`;
+    }).join('');
   }
 }
 
-// ═══ مشاركة ═══
-function shareResult() {
-  const r = window._speedResult;
-  if (!r) return;
-  const text = `⚡ اختبار سرعة النت من Abu Kamila\n\n⬇️ التحميل: ${r.download} Mbps\n⬆️ الرفع: ${r.upload} Mbps\n📡 البينغ: ${r.ping} ms\n📊 تقلب: ${r.jitter} ms\n\n🌐 جربه: krarfsywh-sys.github.io/Abu-Kamila-/`;
-  
-  if (navigator.share) {
-    navigator.share({ title: 'اختبار السرعة', text });
-  } else {
-    navigator.clipboard.writeText(text).then(() => alert('✅ تم النسخ!'));
-  }
-}
-
-// تشغيل أولي
-setTimeout(() => {
-  resetGraph();
-  resizeGraph();
-}, 500);
-</script>
-
-
-<section class="section fade-in" id="contact">
-  <h2>تواصل معي</h2>
-  <p style="text-align:center; color:#aaa; margin-bottom:20px;">تقدر تتواصل معي على المنصات التالية:</p>
-  <div class="contact-links">
-    <a href="https://tiktok.com" class="contact-link" target="_blank"><span>🎵</span> TikTok</a>
-    <a href="https://youtube.com" class="contact-link" target="_blank"><span>▶️</span> YouTube</a>
-    <a href="https://instagram.com" class="contact-link" target="_blank"><span>📷</span> Instagram</a>
-    <a href="https://t.me" class="contact-link" target="_blank"><span>✈️</span> Telegram</a>
-  </div>
-</section>
-
-<footer>
-  <p>© 2026 <b style="color:#00ff88">Karrar</b></p>
-  <p style="margin-top:10px;">صُنع بـ <span class="heart">❤️</span> في العراق 🇮🇶</p>
-</footer>
-
-<button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
-<button class="install-btn" id="installBtn" onclick="installApp()">📱 ثبّت التطبيق</button>
-
-<audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-// مطر المصفوفة
-const matrix = document.getElementById('matrix');
-const ctx = matrix.getContext('2d');
-matrix.width = window.innerWidth;
-matrix.height = window.innerHeight;
-const chars = 'アイウエオカキクケコサシスセソ0123456789ABCDEF';
-const fontSize = 14;
-const columns = matrix.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(0,0,0,0.05)';
-  ctx.fillRect(0,0,matrix.width,matrix.height);
-  ctx.fillStyle = '#00ff88';
-  ctx.font = fontSize + 'px monospace';
-  for (let i=0;i<drops.length;i++) {
-    ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize);
-    if (drops[i]*fontSize > matrix.height && Math.random()>.975) drops[i]=0;
-    drops[i]++;
-  }
-}
-setInterval(drawMatrix, 50);
-
-// الجزيئات
-const particlesEl = document.getElementById('particles');
-for (let i=0;i<30;i++) {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.left = Math.random()*100 + '%';
-  p.style.animationDelay = Math.random()*8 + 's';
-  p.style.animationDuration = (5 + Math.random()*5) + 's';
-  particlesEl.appendChild(p);
-}
-
-// الكتابة التلقائية
-const typingEl = document.getElementById('typing');
-const texts = ['صانع محتوى عراقي 🇮🇶','مطوّر أدوات 💻','مصمم جرافيك 🎨','هاكر أخلاقي 🥷'];
-let textIndex=0, charIndex=0, deleting=false;
-function type() {
-  const current = texts[textIndex];
-  if (!deleting) {
-    typingEl.textContent = current.substring(0, charIndex++);
-    if (charIndex > current.length) { deleting = true; setTimeout(type, 2000); return; }
-  } else {
-    typingEl.textContent = current.substring(0, charIndex--);
-    if (charIndex < 0) { deleting = false; textIndex = (textIndex+1)%texts.length; }
-  }
-  setTimeout(type, deleting ? 50 : 100);
-}
-type();
-
-// عدّاد الزوار
-let visits = localStorage.getItem('ak_visits') || 0;
-visits = parseInt(visits) + 1;
-localStorage.setItem('ak_visits', visits);
-document.getElementById('visits').textContent = visits;
-
-// ظهور تدريجي
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-// موسيقى
-let playing = false;
-function toggleMusic() {
-  const music = document.getElementById('bgMusic');
-  const btn = document.getElementById('musicBtn');
-  if (!playing) {
-    music.volume = 0.3;
-    music.play().catch(()=>{});
-    btn.textContent = '⏸️';
-    btn.classList.add('playing');
-    playing = true;
-  } else {
-    music.pause();
-    btn.textContent = '🎵';
-    btn.classList.remove('playing');
-    playing = false;
-  }
-}
-
-window.addEventListener('resize', () => {
-  matrix.width = window.innerWidth;
-  matrix.height = window.innerHeight;
+document.getElementById('openBtn').addEventListener('click', () => {
+  const packType = document.getElementById('packType').value;
+  const rating = parseInt(document.getElementById('rating').value);
+  data.opens.push({ packType, rating, time: Date.now() });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  render();
+  alert('✅ تم تسجيل السحبة!');
 });
 
-// Service Worker
-
-
 // PWA Install
-let deferredPrompt = null;
+let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  const btn = document.getElementById('installBtn');
-  if (btn) btn.style.display = 'block';
+  document.getElementById('installBtn').style.display = 'block';
 });
-
-function installApp() {
+document.getElementById('installBtn').addEventListener('click', async () => {
   if (deferredPrompt) {
     deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((c) => { deferredPrompt = null; });
-  } else {
-    alert('📱 لتثبيت التطبيق:\n\n1. اضغط القائمة (⋮)\n2. اختر "إضافة إلى الشاشة الرئيسية"\n3. اضغط "إضافة"');
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    document.getElementById('installBtn').style.display = 'none';
   }
-}
+});
 
-// إظهار الزر بعد 3 ثواني (حتى لو ما طلع beforeinstallprompt)
-setTimeout(() => {
-  const btn = document.getElementById('installBtn');
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-  if (btn && !isStandalone) btn.style.display = 'block';
-}, 3000);
-
-// إذا التطبيق مثبت، نخفي الزر
-if (window.matchMedia('(display-mode: standalone)').matches) {
-  setTimeout(() => {
-    const btn = document.getElementById('installBtn');
-    if (btn) btn.style.display = 'none';
-  }, 100);
-}
-</script>
-
-<script>
+// Service Worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js')
-    .then(reg => {
-      // تحديث تلقائي كل 60 ثانية
-      setInterval(() => {
-        reg.update();
-      }, 60000);
-    })
-    .catch(err => console.log('SW:', err));
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
+
+render();
 </script>
 </body>
 </html>
